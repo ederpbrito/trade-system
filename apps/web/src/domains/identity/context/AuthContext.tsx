@@ -21,23 +21,56 @@ type AuthContextValue = {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
+const CSRF_SYNC_ATTEMPTS = 3;
+const CSRF_RETRY_MS = 150;
+const ME_NETWORK_RETRIES = 5;
+const ME_RETRY_BASE_MS = 300;
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const syncCsrf = useCallback(async () => {
-    const r = await apiFetch("/api/v1/auth/csrf");
-    if (!r.ok) return;
-    const data = (await r.json()) as { csrfToken?: string };
-    if (data.csrfToken) setCsrfToken(data.csrfToken);
+  const syncCsrf = useCallback(async (): Promise<boolean> => {
+    for (let attempt = 0; attempt < CSRF_SYNC_ATTEMPTS; attempt++) {
+      const r = await apiFetch("/api/v1/auth/csrf");
+      if (r.ok) {
+        const data = (await r.json()) as { csrfToken?: string };
+        if (data.csrfToken) {
+          setCsrfToken(data.csrfToken);
+          return true;
+        }
+      }
+      if (attempt < CSRF_SYNC_ATTEMPTS - 1) {
+        await new Promise((resolve) => setTimeout(resolve, CSRF_RETRY_MS * (attempt + 1)));
+      }
+    }
+    return false;
   }, []);
 
   const refresh = useCallback(async () => {
-    const r = await apiFetch("/api/v1/auth/me");
+    let r: Response | undefined;
+    for (let attempt = 0; attempt < ME_NETWORK_RETRIES; attempt++) {
+      try {
+        r = await apiFetch("/api/v1/auth/me");
+        break;
+      } catch {
+        if (attempt === ME_NETWORK_RETRIES - 1) {
+          setUser(null);
+          setCsrfToken(null);
+          return;
+        }
+        await new Promise((res) => setTimeout(res, ME_RETRY_BASE_MS * (attempt + 1)));
+      }
+    }
+    if (!r) return;
     if (r.ok) {
       const data = (await r.json()) as { user: AuthUser };
       setUser(data.user);
-      await syncCsrf();
+      const csrfOk = await syncCsrf();
+      if (!csrfOk) {
+        setUser(null);
+        setCsrfToken(null);
+      }
     } else {
       setUser(null);
       setCsrfToken(null);

@@ -2,13 +2,13 @@
 story_key: 2-6-armazenamento-seguro-de-credenciais-de-integracao
 epic: 2
 story: 6
-status: ready-for-dev
+status: done
 generated: "2026-04-05"
 ---
 
 # Story 2.6: Armazenamento seguro de credenciais de integração
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -26,13 +26,15 @@ para **FR34 e NFR-S2/S5**.
 
 ---
 
-## Épico 3: Cockpit, lista monitorizada e oportunidades com janela de operação
-
 ## Tasks / Subtasks
 
-- [ ] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
-- [ ] Actualizar documentação em README se novos comandos/composes
-- [ ] Testes mínimos alinhados à história
+- [x] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
+- [x] Actualizar documentação em README se novos comandos/composes
+- [x] Testes mínimos alinhados à história
+
+### Review Findings
+
+- [x] [Review][Patch] Com `NODE_ENV=production`, `CREDENTIALS_ENCRYPTION_KEY` obrigatória no arranque (`loadEnv` via `superRefine`). [`apps/api/src/config/env.ts`, `apps/api/src/config/env.production-credentials.test.ts`]
 
 ## Dev Notes
 
@@ -60,12 +62,35 @@ para **FR34 e NFR-S2/S5**.
 
 ### Agent Model Used
 
-(preencher após implementação)
+Cursor agent (implementação única épico 2 — stories 2-1 a 2-6)
 
 ### Debug Log References
 
 ### Completion Notes List
 
+- Tabela `integration_credentials` com `encrypted_payload` (AES-256-GCM); `CREDENTIALS_ENCRYPTION_KEY` opcional em dev/test (derivação a partir de `SESSION_SECRET` quando ausente — apenas ambientes não produtivos); em **produção** a chave é obrigatória no `loadEnv()`.
+- `POST /api/v1/integration-credentials` (CSRF) grava; `GET` devolve apenas `sourceKey`, `hasSecret`, `updatedAt`.
+- Teste `integration-credentials.integration.test.ts` garante ausência de texto claro na resposta.
+
 ### File List
 
-(preencher após implementação)
+- apps/api/src/db/schema.ts
+- apps/api/drizzle/migrations/0001_market_data.sql
+- apps/api/src/config/env.ts
+- apps/api/src/config/env.production-credentials.test.ts
+- apps/api/src/repositories/drizzle-integration-credentials.repository.ts
+- apps/api/src/services/integration-credentials/credentials-crypto.ts
+- apps/api/src/services/integration-credentials/credentials-crypto.test.ts
+- apps/api/src/services/integration-credentials/integration-credentials.service.ts
+- apps/api/src/routes/v1/integration-credentials.routes.ts
+- apps/api/src/routes/v1/integration-credentials.integration.test.ts
+- apps/api/src/composition/create-app-services.ts
+- apps/api/src/composition/http-stack.ts
+- .env.example
+
+### Change Log
+
+- 2026-04-05: Story 2.6 implementada no âmbito do batch épico 2; estado sprint → review.
+- 2026-04-05: Code review — estado → in-progress (patch env produção pendente).
+- 2026-04-05: Patch aplicado — `superRefine` em `loadEnv` exige `CREDENTIALS_ENCRYPTION_KEY` em produção; teste `env.production-credentials.test.ts`.
+- 2026-04-05: Épico 2 fechado — story `done`; `sprint-status` actualizado.

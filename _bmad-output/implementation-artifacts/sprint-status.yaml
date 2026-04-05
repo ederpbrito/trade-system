@@ -1,5 +1,7 @@
 # generated: 2026-04-05
 # last_updated: "2026-04-05"
+# epic-2 fechado: 2026-04-05
+# epic-1 fechado: 2026-04-05
 # project: tradesystem
 # project_key: NOKEY
 # tracking_system: file-system
@@ -25,27 +27,28 @@
 
 generated: "2026-04-05"
 last_updated: "2026-04-05"
+# epic-2: correcções review + fecho épico 2026-04-05
 project: tradesystem
 project_key: NOKEY
 tracking_system: file-system
 story_location: _bmad-output/implementation-artifacts
 
 development_status:
-  epic-1: in-progress
-  1-1-monorepo-starter-vite-react-api-fastify-postgresql: review
-  1-2-autenticacao-de-sessao-para-aceder-ao-cockpit: review
-  1-3-identificador-de-correlacao-em-pedidos-e-respostas-de-erro: review
-  1-4-protecao-csrf-e-cors-em-mutacoes-da-api: review
-  1-5-shell-da-spa-com-rotas-login-e-cockpit-placeholder: review
+  epic-1: done
+  1-1-monorepo-starter-vite-react-api-fastify-postgresql: done
+  1-2-autenticacao-de-sessao-para-aceder-ao-cockpit: done
+  1-3-identificador-de-correlacao-em-pedidos-e-respostas-de-erro: done
+  1-4-protecao-csrf-e-cors-em-mutacoes-da-api: done
+  1-5-shell-da-spa-com-rotas-login-e-cockpit-placeholder: done
   epic-1-retrospective: optional
 
-  epic-2: in-progress
-  2-1-esquema-minimo-de-instrumentos-barras-ohlc-e-saude-de-fontes: ready-for-dev
-  2-2-interface-marketdataprovider-e-implementacao-mock-configuravel: ready-for-dev
-  2-3-api-e-ui-de-estado-das-fontes: ready-for-dev
-  2-4-canal-websocket-para-atualizacoes-de-mercado: ready-for-dev
-  2-5-politica-de-degradacao-de-candidatos-quando-dados-sao-maus: ready-for-dev
-  2-6-armazenamento-seguro-de-credenciais-de-integracao: ready-for-dev
+  epic-2: done
+  2-1-esquema-minimo-de-instrumentos-barras-ohlc-e-saude-de-fontes: done
+  2-2-interface-marketdataprovider-e-implementacao-mock-configuravel: done
+  2-3-api-e-ui-de-estado-das-fontes: done
+  2-4-canal-websocket-para-atualizacoes-de-mercado: done
+  2-5-politica-de-degradacao-de-candidatos-quando-dados-sao-maus: done
+  2-6-armazenamento-seguro-de-credenciais-de-integracao: done
   epic-2-retrospective: optional
 
   epic-3: in-progress

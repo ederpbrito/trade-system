@@ -2,13 +2,13 @@
 story_key: 1-5-shell-da-spa-com-rotas-login-e-cockpit-placeholder
 epic: 1
 story: 5
-status: review
+status: done
 generated: "2026-04-05"
 ---
 
 # Story 1.5: Shell da SPA com rotas login e cockpit (placeholder)
 
-Status: review
+Status: done
 
 ## Story
 
@@ -81,3 +81,4 @@ Cursor Agent
 ### Change Log
 
 - 2026-04-05: Shell da SPA, rotas protegidas e *placeholder* do cockpit com *empty state*.
+- 2026-04-05: **Épico 1 fechado** — artefacto `done` (form login sem `type=email` a bloquear `@localhost`; retries de rede no `AuthContext`).

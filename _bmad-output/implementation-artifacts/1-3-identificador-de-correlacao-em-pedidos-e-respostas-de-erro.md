@@ -2,13 +2,13 @@
 story_key: 1-3-identificador-de-correlacao-em-pedidos-e-respostas-de-erro
 epic: 1
 story: 3
-status: review
+status: done
 generated: "2026-04-05"
 ---
 
 # Story 1.3: Identificador de correlação em pedidos e respostas de erro
 
-Status: review
+Status: done
 
 ## Story
 
@@ -76,3 +76,4 @@ Cursor Agent
 ### Change Log
 
 - 2026-04-05: RequestId e formato de erro alinhados à arquitectura e testes Vitest.
+- 2026-04-05: **Épico 1 fechado** — artefacto `done` (guard `VITEST` em `load-env` para não sobrescrever `vitest.config`).

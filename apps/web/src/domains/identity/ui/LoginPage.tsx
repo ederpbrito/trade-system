@@ -31,11 +31,12 @@ export function LoginPage() {
   return (
     <main style={{ maxWidth: 400, margin: "3rem auto", padding: "0 1rem" }}>
       <h1 style={{ fontSize: "1.5rem", marginBottom: "1.5rem" }}>Entrar</h1>
-      <form onSubmit={onSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+      <form noValidate onSubmit={onSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
         <label style={{ display: "flex", flexDirection: "column", gap: 4 }}>
           <span>Email</span>
           <input
-            type="email"
+            type="text"
+            inputMode="email"
             autoComplete="username"
             value={email}
             onChange={(e) => setEmail(e.target.value)}

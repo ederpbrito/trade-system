@@ -2,13 +2,13 @@
 story_key: 2-5-politica-de-degradacao-de-candidatos-quando-dados-sao-maus
 epic: 2
 story: 5
-status: ready-for-dev
+status: done
 generated: "2026-04-05"
 ---
 
 # Story 2.5: Política de degradação de candidatos quando dados são maus
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -27,9 +27,13 @@ para **FR27**.
 
 ## Tasks / Subtasks
 
-- [ ] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
-- [ ] Actualizar documentação em README se novos comandos/composes
-- [ ] Testes mínimos alinhados à história
+- [x] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
+- [x] Actualizar documentação em README se novos comandos/composes
+- [x] Testes mínimos alinhados à história
+
+### Review Findings
+
+- [x] [Review][Patch] N+1 eliminado: `IOhlcBarRepository.latestTsOpenForInstrumentIds` com `SELECT DISTINCT ON` numa única ida à BD. [`apps/api/src/repositories/drizzle-ohlc.repository.ts`, `apps/api/src/services/opportunities/opportunities-preview.service.ts`]
 
 ## Dev Notes
 
@@ -57,12 +61,33 @@ para **FR27**.
 
 ### Agent Model Used
 
-(preencher após implementação)
+Cursor agent (implementação única épico 2 — stories 2-1 a 2-6)
 
 ### Debug Log References
 
 ### Completion Notes List
 
+- Função pura `evaluateCandidates` + `OpportunitiesPreviewService` (combina pior estado de `connector_health` e *staleness* das barras vs `MARKET_DATA_MAX_STALENESS_MS`); *staleness* via `latestTsOpenForInstrumentIds` (uma query `DISTINCT ON`).
+- Política `OPPORTUNITY_DEGRADATION_POLICY`: `suppress` | `uncertain` (env).
+- `GET /api/v1/opportunities/candidates/preview` regista evento estruturado `opportunity_degradation` via `request.log.info` quando aplicável.
+- UI: bloco de pré-visualização no cockpit; testes unitários `degradation.test.ts`.
+
 ### File List
 
-(preencher após implementação)
+- apps/api/src/config/env.ts
+- apps/api/src/services/opportunities/degradation.ts
+- apps/api/src/services/opportunities/degradation.test.ts
+- apps/api/src/services/opportunities/opportunities-preview.service.ts
+- apps/api/src/services/market-data/ports.ts
+- apps/api/src/repositories/drizzle-ohlc.repository.ts
+- apps/api/src/routes/v1/opportunities.routes.ts
+- apps/api/src/composition/create-app-services.ts
+- apps/web/src/domains/cockpit/ui/CockpitPage.tsx
+- .env.example
+
+### Change Log
+
+- 2026-04-05: Story 2.5 implementada no âmbito do batch épico 2; estado sprint → review.
+- 2026-04-05: Code review — estado → in-progress (épico 2).
+- 2026-04-05: Correcção review — query única `latestTsOpenForInstrumentIds`; sprint → review.
+- 2026-04-05: Épico 2 fechado — story `done`; `sprint-status` actualizado.

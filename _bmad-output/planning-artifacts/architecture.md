@@ -294,7 +294,7 @@ tradesystem/
 │       ├── src/
 │       │   ├── index.ts         # entry Fastify
 │       │   ├── app.ts           # buildApp / buildAppForServer
-│       │   ├── composition/     # http-stack, service-factory (wiring)
+│       │   ├── composition/     # http-stack, create-app-services (wiring)
 │       │   ├── config/
 │       │   ├── plugins/         # request id, erros, CSRF, CORS, sessão
 │       │   ├── routes/v1/       # adaptadores HTTP finos + *.test.ts

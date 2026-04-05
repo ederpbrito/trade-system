@@ -2,13 +2,13 @@
 story_key: 2-1-esquema-minimo-de-instrumentos-barras-ohlc-e-saude-de-fontes
 epic: 2
 story: 1
-status: ready-for-dev
+status: done
 generated: "2026-04-05"
 ---
 
 # Story 2.1: Esquema mínimo de instrumentos, barras OHLC e saúde de fontes
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -27,9 +27,13 @@ para **persistir dados de mercado de forma normalizada**.
 
 ## Tasks / Subtasks
 
-- [ ] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
-- [ ] Actualizar documentação em README se novos comandos/composes
-- [ ] Testes mínimos alinhados à história
+- [x] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
+- [x] Actualizar documentação em README se novos comandos/composes
+- [x] Testes mínimos alinhados à história
+
+### Review Findings
+
+- [x] [Review][Defer] A migração `0001_market_data.sql` inclui `ALTER TABLE users` sobre `created_at` — ruído/lock de deploy gerado pelo Drizzle; não bloqueia funcionalidade. [`apps/api/drizzle/migrations/0001_market_data.sql`]
 
 ## Dev Notes
 
@@ -57,12 +61,24 @@ para **persistir dados de mercado de forma normalizada**.
 
 ### Agent Model Used
 
-(preencher após implementação)
+Cursor agent (implementação única épico 2 — stories 2-1 a 2-6)
 
 ### Debug Log References
 
 ### Completion Notes List
 
+- Esquema Drizzle: `instruments`, `ohlc_bars`, `connector_health` com enum PostgreSQL `connector_state` (operational | degraded | unavailable), `timestamptz` em timestamps, índice único em (`instrument_id`, `timeframe`, `ts_open`).
+- Migração gerada: `apps/api/drizzle/migrations/0001_market_data.sql`.
+
 ### File List
 
-(preencher após implementação)
+- apps/api/src/db/schema.ts
+- apps/api/drizzle/migrations/0001_market_data.sql
+- apps/api/drizzle/migrations/meta/0001_snapshot.json
+- apps/api/drizzle/migrations/meta/_journal.json
+
+### Change Log
+
+- 2026-04-05: Story 2.1 implementada no âmbito do batch épico 2; estado sprint → review.
+- 2026-04-05: Code review — estado → in-progress (ação pendente noutras stories do mesmo épico).
+- 2026-04-05: Épico 2 fechado — story `done`; `sprint-status` actualizado.

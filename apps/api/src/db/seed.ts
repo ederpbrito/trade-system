@@ -1,3 +1,4 @@
+import "./load-env.js";
 import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
 import { db, pgClient } from "./client.js";

@@ -5,6 +5,6 @@ export default defineConfig({
   out: "./drizzle/migrations",
   dialect: "postgresql",
   dbCredentials: {
-    url: process.env.DATABASE_URL ?? "postgresql://tradesystem:tradesystem@localhost:5432/tradesystem",
+    url: process.env.DATABASE_URL ?? "postgresql://tradesystem:tradesystem@localhost:5433/tradesystem",
   },
 });

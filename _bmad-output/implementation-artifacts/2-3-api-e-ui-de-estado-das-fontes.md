@@ -2,13 +2,13 @@
 story_key: 2-3-api-e-ui-de-estado-das-fontes
 epic: 2
 story: 3
-status: ready-for-dev
+status: done
 generated: "2026-04-05"
 ---
 
 # Story 2.3: API e UI de estado das fontes
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -27,9 +27,13 @@ para **FR26 e UX-DR7**.
 
 ## Tasks / Subtasks
 
-- [ ] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
-- [ ] Actualizar documentação em README se novos comandos/composes
-- [ ] Testes mínimos alinhados à história
+- [x] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
+- [x] Actualizar documentação em README se novos comandos/composes
+- [x] Testes mínimos alinhados à história
+
+### Review Findings
+
+_Sem achados `patch` / `decision` / `defer` após triagem (NFR-I1 coberto por *polling* 15s documentado)._
 
 ## Dev Notes
 
@@ -57,12 +61,25 @@ para **FR26 e UX-DR7**.
 
 ### Agent Model Used
 
-(preencher após implementação)
+Cursor agent (implementação única épico 2 — stories 2-1 a 2-6)
 
 ### Debug Log References
 
 ### Completion Notes List
 
+- API: `GET /api/v1/data-sources/health` (autenticada) via `DataSourcesService`.
+- UI: secção «Estado das fontes» em `CockpitPage` com *polling* 15s (NFR-I1 ≤30s documentado no comentário do componente); etiquetas Operacional/Degradada/Indisponível.
+- Teste web: `CockpitPage.test.tsx` com `fetch` mock.
+
 ### File List
 
-(preencher após implementação)
+- apps/api/src/services/data-sources/data-sources.service.ts
+- apps/api/src/routes/v1/data-sources.routes.ts
+- apps/web/src/domains/cockpit/ui/CockpitPage.tsx
+- apps/web/src/domains/cockpit/ui/CockpitPage.test.tsx
+
+### Change Log
+
+- 2026-04-05: Story 2.3 implementada no âmbito do batch épico 2; estado sprint → review.
+- 2026-04-05: Code review — estado → in-progress (épico 2).
+- 2026-04-05: Épico 2 fechado — story `done`; `sprint-status` actualizado.

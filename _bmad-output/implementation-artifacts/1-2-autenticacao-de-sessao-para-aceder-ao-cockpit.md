@@ -2,13 +2,13 @@
 story_key: 1-2-autenticacao-de-sessao-para-aceder-ao-cockpit
 epic: 1
 story: 2
-status: review
+status: done
 generated: "2026-04-05"
 ---
 
 # Story 1.2: Autenticação de sessão para aceder ao cockpit
 
-Status: review
+Status: done
 
 ## Story
 
@@ -79,3 +79,4 @@ Cursor Agent
 ### Change Log
 
 - 2026-04-05: Autenticação por sessão segura, *seed* de utilizador e documentação de expiração de sessão.
+- 2026-04-05: **Épico 1 fechado** — artefacto `done` (login `admin@localhost` + schema partilhado; `load-env` no arranque da API).

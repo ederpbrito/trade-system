@@ -2,13 +2,13 @@
 story_key: 1-1-monorepo-starter-vite-react-api-fastify-postgresql
 epic: 1
 story: 1
-status: review
+status: done
 generated: "2026-04-05"
 ---
 
 # Story 1.1: Monorepo, starter Vite/React e API Fastify com PostgreSQL
 
-Status: review
+Status: done
 
 ## Story
 
@@ -77,3 +77,4 @@ Cursor Agent (implementação única com épicos 1-1 a 1-5)
 ### Change Log
 
 - 2026-04-05: Entrega inicial do monorepo, API com healthcheck, Drizzle + migração `users`, README com fluxo de desenvolvimento.
+- 2026-04-05: **Épico 1 fechado** — artefacto `done` (revisão, `.env`/load-env, Postgres host 5433, `npm run dev` com `wait-on`).

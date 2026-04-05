@@ -2,13 +2,13 @@
 story_key: 2-4-canal-websocket-para-atualizacoes-de-mercado
 epic: 2
 story: 4
-status: ready-for-dev
+status: done
 generated: "2026-04-05"
 ---
 
 # Story 2.4: Canal WebSocket para atualizações de mercado
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -28,9 +28,13 @@ para **FR28, UX-DR10 e NFR-P2**.
 
 ## Tasks / Subtasks
 
-- [ ] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
-- [ ] Actualizar documentação em README se novos comandos/composes
-- [ ] Testes mínimos alinhados à história
+- [x] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
+- [x] Actualizar documentação em README se novos comandos/composes
+- [x] Testes mínimos alinhados à história
+
+### Review Findings
+
+- [x] [Review][Decision] Subscrição por símbolo implementada (opção B): cliente envia `{ type: "subscribe", payload: { symbols } }`; o *hub* filtra `market.tick` por `symbolInternal`; `source_health` mantém-se para todos os clientes autenticados. [`apps/api/src/routes/v1/market-stream.ts`, `apps/api/src/composition/realtime-hub.ts`, `apps/web/src/shared/realtime/useMarketWebSocket.ts`]
 
 ## Dev Notes
 
@@ -58,12 +62,31 @@ para **FR28, UX-DR10 e NFR-P2**.
 
 ### Agent Model Used
 
-(preencher após implementação)
+Cursor agent (implementação única épico 2 — stories 2-1 a 2-6)
 
 ### Debug Log References
 
 ### Completion Notes List
 
+- Servidor: `@fastify/websocket`, rota `GET /api/v1/stream` com validação de sessão no *handshake*; mensagem `subscribe` com lista `symbols`; `broadcastEnvelope` filtra `market.tick` por subscrição; `source_health` para todos os clientes autenticados.
+- Cliente: `useMarketWebSocket(enabled, symbols)` — envia `subscribe` ao abrir; backoff até 30s; agregação por símbolo + `requestAnimationFrame` (NFR-P2).
+- Vite: `proxy /api` com `ws: true`; README actualizado.
+
 ### File List
 
-(preencher após implementação)
+- apps/api/package.json
+- apps/api/src/routes/v1/market-stream.ts
+- apps/api/src/composition/realtime-hub.ts
+- apps/api/src/composition/realtime-hub.test.ts
+- apps/api/src/routes/v1/market-data.routes.ts
+- apps/web/vite.config.ts
+- apps/web/src/shared/realtime/useMarketWebSocket.ts
+- apps/web/src/domains/cockpit/ui/CockpitPage.tsx
+- README.md
+
+### Change Log
+
+- 2026-04-05: Story 2.4 implementada no âmbito do batch épico 2; estado sprint → review.
+- 2026-04-05: Code review — estado → in-progress (decisão WS pendente).
+- 2026-04-05: Correcção review — subscrição WS + filtro no *hub*; teste `realtime-hub.test.ts`; sprint → review.
+- 2026-04-05: Épico 2 fechado — story `done`; `sprint-status` actualizado.

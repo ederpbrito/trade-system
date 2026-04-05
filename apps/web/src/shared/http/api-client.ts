@@ -1,5 +1,11 @@
 const API_BASE = "";
 
+function normalizedPathname(url: string): string {
+  const pathOnly = url.split("?")[0] ?? "";
+  const trimmed = pathOnly.replace(/\/+$/, "");
+  return trimmed === "" ? "/" : trimmed;
+}
+
 let csrfToken: string | null = null;
 
 export function setCsrfToken(token: string | null) {
@@ -22,7 +28,7 @@ export async function apiFetch(path: string, init: RequestInit & { method?: Meth
     headers.set("Content-Type", "application/json");
   }
   const isMutation = ["POST", "PUT", "PATCH", "DELETE"].includes(method);
-  const isLogin = path.replace(API_BASE, "").split("?")[0] === "/api/v1/auth/login";
+  const isLogin = normalizedPathname(path.replace(API_BASE, "")) === "/api/v1/auth/login";
   if (isMutation && !isLogin && csrfToken) {
     headers.set("X-CSRF-Token", csrfToken);
   }

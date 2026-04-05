@@ -5,8 +5,9 @@ services:
       POSTGRES_USER: tradesystem
       POSTGRES_PASSWORD: tradesystem
       POSTGRES_DB: tradesystem
+    # Host 5433 evita conflito com PostgreSQL local (muitas instalações usam 5432).
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - tradesystem_pg:/var/lib/postgresql/data
     healthcheck:

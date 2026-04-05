@@ -2,13 +2,13 @@
 story_key: 1-4-protecao-csrf-e-cors-em-mutacoes-da-api
 epic: 1
 story: 4
-status: review
+status: done
 generated: "2026-04-05"
 ---
 
 # Story 1.4: Protecção CSRF e CORS em mutações da API
 
-Status: review
+Status: done
 
 ## Story
 
@@ -78,3 +78,4 @@ Cursor Agent
 ### Change Log
 
 - 2026-04-05: CORS restrito e validação de CSRF em mutações com testes.
+- 2026-04-05: **Épico 1 fechado** — artefacto `done` (CORS por `Origin`, path normalizado no CSRF, testes `cors-origin`).

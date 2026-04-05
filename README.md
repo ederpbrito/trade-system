@@ -24,6 +24,8 @@ Monorepo com SPA **Vite + React** (`apps/web`) e **API Fastify** (`apps/api`), P
    docker compose up -d
    ```
 
+   O Compose expõe o Postgres em **`localhost:5433`** (a porta **5432** no host costuma estar ocupada por instalações locais). O `DATABASE_URL` em `.env.example` já usa essa porta.
+
 3. Instale dependências na raiz:
 
    ```bash
@@ -38,13 +40,15 @@ Monorepo com SPA **Vite + React** (`apps/web`) e **API Fastify** (`apps/api`), P
    npm run db:seed -w api
    ```
 
+   As migrações actuais incluem o modelo mínimo de mercado (`instruments`, `ohlc_bars`, `connector_health`) e armazenamento de metadados de credenciais de integração (payload encriptado no servidor).
+
 5. Desenvolvimento (web + API):
 
    ```bash
    npm run dev
    ```
 
-   - SPA: [http://localhost:5173](http://localhost:5173) (proxy `/api` → API)
+   - SPA: [http://localhost:5173](http://localhost:5173) (proxy `/api` → API, incluindo **WebSocket** para `/api/v1/stream`; após ligar, o cliente envia `{ "type": "subscribe", "payload": { "symbols": ["…"] } }` para receber `market.tick` por símbolo)
    - API: [http://localhost:3001](http://localhost:3001)
    - Healthcheck: `GET http://localhost:3001/api/v1/health`
 

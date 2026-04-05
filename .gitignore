@@ -5,7 +5,10 @@ dist/
 # Ferramentas e configuração local do editor / agentes
 .claude/
 .cursor/
+# Segredos e ambiente local (nunca versionar)
 .env
+.env.*
+!.env.example
 .env.local
 *.log
 .DS_Store
