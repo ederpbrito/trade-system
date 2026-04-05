@@ -1,0 +1,12 @@
+# Dependências e artefactos de build
+node_modules/
+dist/
+
+# Ferramentas e configuração local do editor / agentes
+.claude/
+.cursor/
+.env
+.env.local
+*.log
+.DS_Store
+coverage/

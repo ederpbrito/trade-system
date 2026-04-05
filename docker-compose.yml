@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: tradesystem
+      POSTGRES_PASSWORD: tradesystem
+      POSTGRES_DB: tradesystem
+    ports:
+      - "5432:5432"
+    volumes:
+      - tradesystem_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tradesystem -d tradesystem"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  tradesystem_pg:

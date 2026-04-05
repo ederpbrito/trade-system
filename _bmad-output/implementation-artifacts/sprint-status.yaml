@@ -1,0 +1,90 @@
+# generated: 2026-04-05
+# last_updated: "2026-04-05"
+# project: tradesystem
+# project_key: NOKEY
+# tracking_system: file-system
+# story_location: _bmad-output/implementation-artifacts
+#
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - ready-for-dev: Story file created in stories folder
+#   - in-progress: Developer actively working on implementation
+#   - review: Ready for code review
+#   - done: Story completed
+#
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - done: Retrospective has been completed
+
+generated: "2026-04-05"
+last_updated: "2026-04-05"
+project: tradesystem
+project_key: NOKEY
+tracking_system: file-system
+story_location: _bmad-output/implementation-artifacts
+
+development_status:
+  epic-1: in-progress
+  1-1-monorepo-starter-vite-react-api-fastify-postgresql: review
+  1-2-autenticacao-de-sessao-para-aceder-ao-cockpit: review
+  1-3-identificador-de-correlacao-em-pedidos-e-respostas-de-erro: review
+  1-4-protecao-csrf-e-cors-em-mutacoes-da-api: review
+  1-5-shell-da-spa-com-rotas-login-e-cockpit-placeholder: review
+  epic-1-retrospective: optional
+
+  epic-2: in-progress
+  2-1-esquema-minimo-de-instrumentos-barras-ohlc-e-saude-de-fontes: ready-for-dev
+  2-2-interface-marketdataprovider-e-implementacao-mock-configuravel: ready-for-dev
+  2-3-api-e-ui-de-estado-das-fontes: ready-for-dev
+  2-4-canal-websocket-para-atualizacoes-de-mercado: ready-for-dev
+  2-5-politica-de-degradacao-de-candidatos-quando-dados-sao-maus: ready-for-dev
+  2-6-armazenamento-seguro-de-credenciais-de-integracao: ready-for-dev
+  epic-2-retrospective: optional
+
+  epic-3: in-progress
+  3-1-crud-da-lista-monitorizada: ready-for-dev
+  3-2-vista-resumida-do-estado-por-ativo-e-filtros-basicos: ready-for-dev
+  3-3-motor-de-oportunidades-candidatas-e-registo-de-janela: ready-for-dev
+  3-4-detalhe-do-candidato-com-timeframe-e-horizonte-explicitos: ready-for-dev
+  3-5-filtrar-e-ordenar-candidatos-por-janela: ready-for-dev
+  3-6-layout-cockpit-tres-colunas-desktop-com-degradacao-responsiva: ready-for-dev
+  epic-3-retrospective: optional
+
+  epic-4: in-progress
+  4-1-configuracao-de-limites-de-risco: ready-for-dev
+  4-2-calculo-e-visualizacao-de-aderencia-pre-decisao: ready-for-dev
+  4-3-bloqueio-ou-confirmacao-de-excecao-com-registo: ready-for-dev
+  epic-4-retrospective: optional
+
+  epic-5: in-progress
+  5-1-intencao-de-execucao-em-modo-demonstracao: ready-for-dev
+  5-2-distincao-visual-e-logica-demo-vs-producao-gate-de-producao: ready-for-dev
+  5-3-registo-de-decisao-com-racional-estruturado: ready-for-dev
+  5-4-trilha-auditavel-de-decisoes-e-execucoes: ready-for-dev
+  5-5-historico-consultavel-de-decisoes-e-racional: ready-for-dev
+  5-6-vistas-basicas-de-desempenho-agregados: ready-for-dev
+  5-7-avisos-de-incerteza-e-ausencia-de-garantia: ready-for-dev
+  5-8-superficie-de-erro-com-requestid-copiavel: ready-for-dev
+  5-9-testes-e2e-dos-tres-percursos-criticos: ready-for-dev
+  epic-5-retrospective: optional
+
+  epic-6: in-progress
+  6-1-explicacao-da-tese-da-oportunidade-na-janela-assistantservice-regras: ready-for-dev
+  6-2-deteccao-e-apresentacao-de-conflito-entre-janelas: ready-for-dev
+  6-3-relacao-com-limites-de-risco-e-plano: ready-for-dev
+  6-4-ui-de-interaccao-estruturada-extensivel-a-conversacional: ready-for-dev
+  epic-6-retrospective: optional
+
+  epic-7: in-progress
+  7-1-politica-versionada-que-influencia-ranking-de-candidatos: ready-for-dev
+  7-2-jobs-de-treino-e-avaliacao-em-paper-demo: ready-for-dev
+  7-3-persistencia-de-metricas-e-artefactos-de-experimentos: ready-for-dev
+  7-4-comparar-versoes-ou-experimentos-na-ui: ready-for-dev
+  epic-7-retrospective: optional

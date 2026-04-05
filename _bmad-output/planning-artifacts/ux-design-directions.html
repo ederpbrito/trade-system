@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>tradesystem — Direções de design UX</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0c0f12;
+      --panel: #151a21;
+      --border: #2a3441;
+      --text: #e8edf4;
+      --muted: #8b98a8;
+      --accent: #3d9a9a;
+      --warn: #c9a227;
+      --danger: #c44c4c;
+      --up: #4caf7a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem;
+      justify-content: space-between;
+    }
+    h1 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+    .tabs button {
+      font-family: inherit;
+      font-size: 0.75rem;
+      padding: 0.45rem 0.75rem;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--muted);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s, background 0.15s;
+    }
+    .tabs button:hover { color: var(--text); border-color: #3d4a5c; }
+    .tabs button.active {
+      color: var(--text);
+      border-color: var(--accent);
+      background: #1a2528;
+    }
+    main { padding: 1rem 1.25rem 2rem; }
+    .direction {
+      display: none;
+      animation: fade 0.25s ease;
+    }
+    .direction.active { display: block; }
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .mock-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+    }
+    .mono { font-family: "IBM Plex Mono", monospace; font-size: 0.8rem; }
+    /* Shared mock chrome */
+    .chrome {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--panel);
+      min-height: 420px;
+    }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.75rem;
+    }
+    .demo-pill {
+      background: #2a3d32;
+      color: #9ed9b4;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.65rem;
+    }
+    .row { display: flex; min-height: 360px; }
+    .col {
+      border-right: 1px solid var(--border);
+      padding: 0.65rem;
+      flex: 1;
+      min-width: 0;
+    }
+    .col:last-child { border-right: none; }
+    .asset {
+      padding: 0.4rem 0.5rem;
+      border-radius: 6px;
+      margin-bottom: 0.35rem;
+      font-size: 0.72rem;
+      cursor: default;
+      border: 1px solid transparent;
+    }
+    .asset:hover { background: rgba(255,255,255,0.04); }
+    .asset.sel { border-color: var(--accent); background: rgba(61,154,154,0.08); }
+    .tf { color: var(--muted); font-size: 0.65rem; }
+    .conflict { border-left: 3px solid var(--warn); padding-left: 0.4rem; margin-top: 0.5rem; font-size: 0.7rem; color: #e0c76a; }
+    h3 { margin: 0 0 0.5rem; font-size: 0.85rem; }
+    .assistant {
+      background: rgba(0,0,0,0.2);
+      border-radius: 8px;
+      padding: 0.6rem;
+      font-size: 0.72rem;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+    /* Direction-specific */
+    .d2.light {
+      --bg: #f4f2ed;
+      --panel: #fff;
+      --border: #e0dcd4;
+      --text: #1a1a1a;
+      --muted: #5c5c5c;
+    }
+    .d2 .chrome { box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
+    .d2 h1, .d2 .mock-label { font-family: "Instrument Serif", Georgia, serif; font-weight: 400; }
+    .d2 h3 { font-family: "Instrument Serif", Georgia, serif; font-size: 1.05rem; }
+    .d6.minimal .chrome { border-radius: 4px; }
+    .d6.minimal .row { gap: 0; }
+    .d6.minimal .col { border: none; border-right: 1px solid var(--border); }
+    .d5.high {
+      --bg: #000;
+      --panel: #0a0a0a;
+      --border: #fff;
+      --text: #fff;
+      --muted: #ccc;
+      --accent: #fffd8c;
+    }
+    .d5.high .asset.sel { background: #fff; color: #000; border-color: #fff; }
+    .d5.high .demo-pill { background: #fff; color: #000; }
+    .d4.focus .row { flex-direction: column; }
+    .d4.focus .col { border-right: none; border-bottom: 1px solid var(--border); flex: none; }
+    .d4.focus .col:last-child { border-bottom: none; flex: 1; }
+    footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.72rem;
+      color: var(--muted);
+      max-width: 960px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>tradesystem — exploração de direções</h1>
+    <nav class="tabs" aria-label="Direções">
+      <button type="button" class="active" data-dir="d1">1 Denso</button>
+      <button type="button" data-dir="d2">2 Editorial claro</button>
+      <button type="button" data-dir="d3">3 Três colunas</button>
+      <button type="button" data-dir="d4">4 Foco único</button>
+      <button type="button" data-dir="d5">5 Alto contraste</button>
+      <button type="button" data-dir="d6">6 Minimal</button>
+    </nav>
+  </header>
+  <main>
+    <section id="d1" class="direction active">
+      <p class="mock-label">Direção 1 — Terminal denso (informação máxima, pouco adorno)</p>
+      <div class="chrome">
+        <div class="topbar"><span class="mono">COCKPIT</span><span class="demo-pill">DEMO</span><span class="mono">B3 · USD</span></div>
+        <div class="row">
+          <div class="col" style="flex:0.9">
+            <div class="mono" style="font-size:0.65rem;color:var(--muted);margin-bottom:0.5rem;">WATCH</div>
+            <div class="asset sel"><strong>PETR4</strong> <span class="tf">M15 · dia</span> · <span style="color:var(--up)">cand</span></div>
+            <div class="asset"><strong>AAPL</strong> <span class="tf">H1 · sem</span></div>
+            <div class="asset"><strong>WIN</strong> <span class="tf">M5 · dia</span> · fonte <span style="color:var(--warn)">deg</span></div>
+          </div>
+          <div class="col" style="flex:1.1">
+            <h3>PETR4 — janela M15 / horizonte dia</h3>
+            <p class="mono" style="color:var(--muted);margin:0 0 0.5rem;">Risco: 1.2% conta · dentro do limite diário</p>
+            <div class="conflict">⚠ Curto M15 alinhado · semanal ainda neutro</div>
+          </div>
+          <div class="col" style="flex:1">
+            <div class="mono" style="font-size:0.65rem;margin-bottom:0.35rem;">ASSISTENTE</div>
+            <div class="assistant">Tese da janela: continuação intradiária com stop sugerido abaixo do último *swing*. Plano do dia: permitido até 2 operações — esta seria a 1.ª.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="d2" class="direction d2 light">
+      <p class="mock-label">Direção 2 — Editorial claro (tipografia forte, respiro)</p>
+      <div class="chrome">
+        <div class="topbar" style="background:#faf9f7;"><span>Tradesystem</span><span class="demo-pill" style="background:#1a1a1a;color:#fff;">Demonstração</span></div>
+        <div class="row">
+          <div class="col" style="flex:1">
+            <h3 style="margin-top:0;">Ativos</h3>
+            <div class="asset sel" style="background:#f0ebe3;"><strong>PETR4</strong><br/><span class="tf">M15 · dia</span></div>
+            <div class="asset"><strong>AAPL</strong><br/><span class="tf">H1 · semana</span></div>
+          </div>
+          <div class="col" style="flex:1.2">
+            <h3 style="margin-top:0;">Oportunidade</h3>
+            <p style="font-size:0.8rem;color:var(--muted);line-height:1.5;">Resumo calmo da tese, risco e tempo de exposição — menos números em simultâneo, mais leitura.</p>
+          </div>
+          <div class="col" style="flex:1">
+            <h3 style="margin-top:0;">Apoio</h3>
+            <div class="assistant" style="background:#f7f5f0;color:#444;">Conflitos e alinhamento ao plano em prosa curta.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="d3" class="direction">
+      <p class="mock-label">Direção 3 — Três colunas (recomendada no spec)</p>
+      <div class="chrome">
+        <div class="topbar"><span>Lista</span><span style="color:var(--muted);">|</span><span>Detalhe + risco</span><span style="color:var(--muted);">|</span><span>Assistente</span><span class="demo-pill">DEMO</span></div>
+        <div class="row">
+          <div class="col"><h3 style="font-size:0.75rem;color:var(--muted);">Candidatos</h3><div class="asset sel"><strong>PETR4</strong><div class="tf">M15 · dia</div></div><div class="asset"><strong>VALE3</strong><div class="tf">D1 · mês</div></div></div>
+          <div class="col" style="flex:1.15"><h3>PETR4</h3><p class="mono" style="font-size:0.7rem;">Checks ✓ tamanho ✓ perda diária ✓ concentração</p><div class="conflict">Conflito: M15 *long* vs tendência semanal fraca</div></div>
+          <div class="col"><h3 style="font-size:0.75rem;color:var(--muted);">Assistente</h3><div class="assistant">Operar nesta janela está <strong>alinhado</strong> ao limite de risco. Documente o motivo antes de enviar.</div><button type="button" style="margin-top:0.6rem;width:100%;padding:0.45rem;background:var(--accent);border:none;border-radius:6px;color:#fff;font-weight:600;cursor:pointer;font-size:0.75rem;">Registar decisão</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="d4" class="direction d4 focus">
+      <p class="mock-label">Direção 4 — Foco único (uma coluna; detalhe em profundidade)</p>
+      <div class="chrome">
+        <div class="topbar"><span>← Voltar à lista</span><span class="demo-pill">DEMO</span></div>
+        <div class="row">
+          <div class="col" style="padding:0.85rem;">
+            <h2 style="margin:0 0 0.25rem;font-size:1.1rem;">PETR4</h2>
+            <p class="mono" style="color:var(--muted);margin:0 0 1rem;">M15 · horizonte dia · B3</p>
+            <div class="assistant" style="margin-bottom:0.75rem;">Assistente integrado no fluxo vertical — menos comparação lado a lado, mais leitura linear.</div>
+            <div style="display:flex;gap:0.5rem;"><button type="button" style="flex:1;padding:0.5rem;background:var(--accent);border:none;border-radius:6px;color:#fff;font-weight:600;">Operar em demo</button><button type="button" style="flex:1;padding:0.5rem;background:transparent;border:1px solid var(--border);color:var(--text);border-radius:6px;">Não operar</button></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="d5" class="direction d5 high">
+      <p class="mock-label">Direção 5 — Alto contraste (WCAG, ênfase em estados)</p>
+      <div class="chrome">
+        <div class="topbar"><strong>COCKPIT</strong><span class="demo-pill">MODO DEMO</span></div>
+        <div class="row">
+          <div class="col"><div class="asset sel"><strong>PETR4</strong><br/><span class="tf">M15 DIA</span></div></div>
+          <div class="col" style="flex:1.2"><h3>Risco</h3><p style="font-size:0.8rem;">Limite: OK</p><p style="border:2px solid #fff;padding:0.5rem;font-weight:600;">CONFLITO DE JANELA ATIVO</p></div>
+          <div class="col"><div class="assistant" style="border:1px solid #fff;color:#fff;">Texto de apoio em alto contraste.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="d6" class="direction d6 minimal">
+      <p class="mock-label">Direção 6 — Minimal dashboard (bordas finas, muito espaço negativo)</p>
+      <div class="chrome">
+        <div class="topbar" style="border-bottom:none;"><span></span><span class="demo-pill">demo</span></div>
+        <div class="row" style="min-height:320px;">
+          <div class="col" style="flex:1"><div style="height:100%;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:1rem;"><span class="mono" style="color:var(--muted);">3 candidatos</span><span style="font-size:1.4rem;font-weight:600;margin-top:0.25rem;">PETR4</span><span class="tf">M15 · dia</span></div></div>
+          <div class="col" style="flex:1.5;border:none;"><div style="padding:2rem 1rem;"><div class="assistant" style="background:transparent;border:1px dashed var(--border);">Assistente reduzido a uma única frase + link “expandir”.</div></div></div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    Utilize os separadores para comparar hierarquia, densidade e posição do assistente. A <strong>direção 3</strong> está alinhada à recomendação na <code>ux-design-specification.md</code>.
+  </footer>
+  <script>
+    document.querySelectorAll(".tabs button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tabs button").forEach((b) => b.classList.remove("active"));
+        document.querySelectorAll(".direction").forEach((d) => d.classList.remove("active"));
+        btn.classList.add("active");
+        const id = btn.getAttribute("data-dir");
+        const el = document.getElementById(id);
+        if (el) el.classList.add("active");
+      });
+    });
+  </script>
+</body>
+</html>
