@@ -9,22 +9,31 @@ import type { Env } from "../config/env.js";
 import dataSourcesRoutes from "../routes/v1/data-sources.routes.js";
 import healthRoutes from "../routes/v1/health.js";
 import identityRoutes from "../routes/v1/identity.routes.js";
+import instrumentsRoutes from "../routes/v1/instruments.routes.js";
 import integrationCredentialsRoutes from "../routes/v1/integration-credentials.routes.js";
 import marketDataRoutes from "../routes/v1/market-data.routes.js";
 import marketStreamPlugin from "../routes/v1/market-stream.js";
 import opportunitiesRoutes from "../routes/v1/opportunities.routes.js";
+import watchlistRoutes from "../routes/v1/watchlist.routes.js";
 import type { DataSourcesService } from "../services/data-sources/data-sources.service.js";
 import type { IntegrationCredentialsService } from "../services/integration-credentials/integration-credentials.service.js";
 import type { MarketDataIngestionService } from "../services/market-data/market-data-ingestion.service.js";
+import type { OpportunitiesCandidatesService } from "../services/opportunities/opportunities-candidates.service.js";
 import type { OpportunitiesPreviewService } from "../services/opportunities/opportunities-preview.service.js";
 import type { IdentityService } from "../services/identity/index.js";
+import type { WatchlistService } from "../services/watchlist/watchlist.service.js";
+import type { RiskService } from "../services/risk/risk.service.js";
+import riskRoutes from "../routes/v1/risk.routes.js";
 
 export type HttpStackOptions = {
   identityService: IdentityService;
   marketDataIngestion: MarketDataIngestionService;
   dataSources: DataSourcesService;
   opportunitiesPreview: OpportunitiesPreviewService;
+  opportunitiesCandidates: OpportunitiesCandidatesService;
+  watchlist: WatchlistService;
   integrationCredentials: IntegrationCredentialsService;
+  riskService: RiskService;
 };
 
 /**
@@ -74,9 +83,15 @@ export async function registerHttpStack(app: FastifyInstance, env: Env, deps: Ht
   await app.register(identityRoutes, { identityService: deps.identityService });
   await app.register(marketDataRoutes, { marketDataIngestion: deps.marketDataIngestion });
   await app.register(dataSourcesRoutes, { dataSources: deps.dataSources });
-  await app.register(opportunitiesRoutes, { opportunitiesPreview: deps.opportunitiesPreview });
+  await app.register(opportunitiesRoutes, {
+    opportunitiesPreview: deps.opportunitiesPreview,
+    opportunitiesCandidates: deps.opportunitiesCandidates,
+  });
+  await app.register(watchlistRoutes, { watchlist: deps.watchlist });
+  await app.register(instrumentsRoutes, { watchlist: deps.watchlist });
   await app.register(integrationCredentialsRoutes, {
     integrationCredentials: deps.integrationCredentials,
   });
+  await app.register(riskRoutes, { riskService: deps.riskService });
   await app.register(marketStreamPlugin);
 }

@@ -1,5 +1,5 @@
 # generated: 2026-04-05
-# last_updated: "2026-04-05"
+# last_updated: "2026-04-06" (épico 3 concluído; épico 4 iniciado)
 # epic-2 fechado: 2026-04-05
 # epic-1 fechado: 2026-04-05
 # project: tradesystem
@@ -26,7 +26,7 @@
 #   - done: Retrospective has been completed
 
 generated: "2026-04-05"
-last_updated: "2026-04-05"
+last_updated: "2026-04-07"
 # epic-2: correcções review + fecho épico 2026-04-05
 project: tradesystem
 project_key: NOKEY
@@ -52,18 +52,18 @@ development_status:
   epic-2-retrospective: optional
 
   epic-3: in-progress
-  3-1-crud-da-lista-monitorizada: ready-for-dev
-  3-2-vista-resumida-do-estado-por-ativo-e-filtros-basicos: ready-for-dev
-  3-3-motor-de-oportunidades-candidatas-e-registo-de-janela: ready-for-dev
-  3-4-detalhe-do-candidato-com-timeframe-e-horizonte-explicitos: ready-for-dev
-  3-5-filtrar-e-ordenar-candidatos-por-janela: ready-for-dev
-  3-6-layout-cockpit-tres-colunas-desktop-com-degradacao-responsiva: ready-for-dev
+  3-1-crud-da-lista-monitorizada: done
+  3-2-vista-resumida-do-estado-por-ativo-e-filtros-basicos: done
+  3-3-motor-de-oportunidades-candidatas-e-registo-de-janela: done
+  3-4-detalhe-do-candidato-com-timeframe-e-horizonte-explicitos: done
+  3-5-filtrar-e-ordenar-candidatos-por-janela: done
+  3-6-layout-cockpit-tres-colunas-desktop-com-degradacao-responsiva: done
   epic-3-retrospective: optional
 
   epic-4: in-progress
-  4-1-configuracao-de-limites-de-risco: ready-for-dev
-  4-2-calculo-e-visualizacao-de-aderencia-pre-decisao: ready-for-dev
-  4-3-bloqueio-ou-confirmacao-de-excecao-com-registo: ready-for-dev
+  4-1-configuracao-de-limites-de-risco: done
+  4-2-calculo-e-visualizacao-de-aderencia-pre-decisao: done
+  4-3-bloqueio-ou-confirmacao-de-excecao-com-registo: done
   epic-4-retrospective: optional
 
   epic-5: in-progress

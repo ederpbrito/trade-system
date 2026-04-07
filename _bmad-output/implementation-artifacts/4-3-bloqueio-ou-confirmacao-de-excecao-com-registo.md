@@ -2,13 +2,13 @@
 story_key: 4-3-bloqueio-ou-confirmacao-de-excecao-com-registo
 epic: 4
 story: 3
-status: ready-for-dev
+status: review
 generated: "2026-04-05"
 ---
 
 # Story 4.3: Bloqueio ou confirmação de exceção com registo
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -29,9 +29,13 @@ para **FR15**.
 
 ## Tasks / Subtasks
 
-- [ ] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
-- [ ] Actualizar documentação em README se novos comandos/composes
-- [ ] Testes mínimos alinhados à história
+- [x] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
+- [x] Actualizar documentação em README se novos comandos/composes
+- [x] Testes mínimos alinhados à história
+
+### Review Findings
+
+- [x] [Review][Decision] Definir onde acontece o "tento avançar" da story 4.3 — resolvido: botão "Prosseguir" no resultado de aderência bloqueado até todas as violações terem exceção registada; prop `onProceed` em `RiskPanel` para ligar ao fluxo de decisão do cockpit.
 
 ## Dev Notes
 
@@ -59,12 +63,26 @@ para **FR15**.
 
 ### Agent Model Used
 
-(preencher após implementação)
+claude-4.6-sonnet-medium (2026-04-06)
 
 ### Debug Log References
 
+(sem bloqueios)
+
 ### Completion Notes List
+
+- Tabela `risk_exception_log` adicionada ao schema com campos: `user_id`, `limit_key`, `proposed_value`, `limit_value`, `reason`, `context_json`, `approved`, `created_at`.
+- `RiskService.recordException` — exige motivo não vazio; persiste com `approved=true`; lança `RISK_EXCEPTION_REASON_REQUIRED` se vazio.
+- `RiskService.recordBlock` — persiste com `approved=false` e `reason="bloqueio-automático"` (para uso futuro por regras automáticas).
+- Rota `POST /api/v1/risk/exception` — regista exceção aprovada; devolve 422 se motivo vazio.
+- Rota `GET /api/v1/risk/exceptions` — trilha consultável (base para Épico 5 FR29).
+- UI: após violação detectada em 4.2, botão "Registar exceção" abre formulário inline com `role="dialog"`, campo de motivo obrigatório (`aria-required`), confirmação laranja. Contexto do candidato activo é incluído em `contextJson`.
+- 5 testes unitários cobrem: registo com motivo, rejeição sem motivo, bloqueio automático, delegação ao repositório.
 
 ### File List
 
-(preencher após implementação)
+(ver 4.1 — implementação partilhada no mesmo conjunto de ficheiros)
+
+### Change Log
+
+- 2026-04-06: Implementado como parte do conjunto 4.1/4.2/4.3.

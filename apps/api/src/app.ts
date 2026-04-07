@@ -19,7 +19,10 @@ function mergeServices(env: Env, buildOpts?: BuildAppOptions): AppServices {
     marketDataIngestion: o?.marketDataIngestion ?? defaults.marketDataIngestion,
     dataSources: o?.dataSources ?? defaults.dataSources,
     opportunitiesPreview: o?.opportunitiesPreview ?? defaults.opportunitiesPreview,
+    opportunitiesCandidates: o?.opportunitiesCandidates ?? defaults.opportunitiesCandidates,
+    watchlist: o?.watchlist ?? defaults.watchlist,
     integrationCredentials: o?.integrationCredentials ?? defaults.integrationCredentials,
+    riskService: o?.riskService ?? defaults.riskService,
   };
 }
 
