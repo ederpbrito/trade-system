@@ -2,12 +2,14 @@ import type { FastifyPluginAsync } from "fastify";
 import fp from "fastify-plugin";
 import type { OpportunitiesCandidatesService } from "../../services/opportunities/opportunities-candidates.service.js";
 import type { OpportunitiesPreviewService } from "../../services/opportunities/opportunities-preview.service.js";
-import { sortOpportunityCandidates } from "../../services/opportunities/candidate-sort.js";
+import { sortOpportunityCandidates, sortCandidatesByPolicy } from "../../services/opportunities/candidate-sort.js";
+import type { RankingPolicyService } from "../../services/ranking-policy/ranking-policy.service.js";
 import { sendError } from "../../shared/errors.js";
 
 export type OpportunitiesRoutesOptions = {
   opportunitiesPreview: OpportunitiesPreviewService;
   opportunitiesCandidates: OpportunitiesCandidatesService;
+  rankingPolicyService?: RankingPolicyService;
 };
 
 const opportunitiesRoutes: FastifyPluginAsync<OpportunitiesRoutesOptions> = async (app, opts) => {
@@ -32,12 +34,20 @@ const opportunitiesRoutes: FastifyPluginAsync<OpportunitiesRoutesOptions> = asyn
     const { candidates, suppressionReason, policy } = await opts.opportunitiesCandidates.listForUser(userId, (meta) => {
       request.log?.info(meta);
     });
-    const sorted = sortOpportunityCandidates(candidates, sortBy);
+
+    // FR21 — aplicar política versionada se disponível e sort=policy
+    const activePolicy = opts.rankingPolicyService ? await opts.rankingPolicyService.getActive() : null;
+    const sorted =
+      q.sort === "policy" && activePolicy
+        ? sortCandidatesByPolicy(candidates, activePolicy.weights)
+        : sortOpportunityCandidates(candidates, sortBy);
+
     return reply.send({
       candidates: sorted,
       suppressionReason,
       policy,
-      sortBy,
+      sortBy: q.sort === "policy" && activePolicy ? "policy" : sortBy,
+      rankingPolicy: activePolicy ? { version: activePolicy.version, name: activePolicy.name } : null,
     });
   });
 };

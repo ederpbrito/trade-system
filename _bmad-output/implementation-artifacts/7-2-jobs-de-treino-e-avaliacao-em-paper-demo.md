@@ -2,13 +2,13 @@
 story_key: 7-2-jobs-de-treino-e-avaliacao-em-paper-demo
 epic: 7
 story: 2
-status: ready-for-dev
+status: done
 generated: "2026-04-05"
 ---
 
 # Story 7.2: Jobs de treino e avaliação em paper/demo
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -26,9 +26,9 @@ para **FR22**.
 
 ## Tasks / Subtasks
 
-- [ ] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
-- [ ] Actualizar documentação em README se novos comandos/composes
-- [ ] Testes mínimos alinhados à história
+- [x] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
+- [x] Actualizar documentação em README se novos comandos/composes
+- [x] Testes mínimos alinhados à história
 
 ## Dev Notes
 
@@ -56,12 +56,35 @@ para **FR22**.
 
 ### Agent Model Used
 
-(preencher após implementação)
+claude-4.6-sonnet-medium
 
 ### Debug Log References
 
 ### Completion Notes List
 
+- Tabela `training_jobs` com enum `training_job_status` (queued/running/success/failed) adicionada ao schema.
+- `TrainingJobService` com `createAndRun` que executa ciclo de treino isolado em paper/demo.
+- Simulação determinística de treino (`simulatePaperTraining`) que gera métricas sintéticas por versão de política.
+- Porta `ITrainingJobRepository` + `DrizzleTrainingJobRepository` implementados.
+- Rotas `GET /api/v1/training-jobs`, `GET /api/v1/training-jobs/:id`, `POST /api/v1/training-jobs`.
+- Estado visível: queued → running → success/failed com timestamps.
+- 4 testes unitários para `TrainingJobService`.
+
 ### File List
 
-(preencher após implementação)
+- apps/api/src/services/training/ports.ts (novo)
+- apps/api/src/services/training/training-job.service.ts (novo)
+- apps/api/src/services/training/training-job.service.test.ts (novo)
+- apps/api/src/repositories/drizzle-training-job.repository.ts (novo)
+- apps/api/src/routes/v1/training-jobs.routes.ts (novo)
+- apps/api/src/composition/create-app-services.ts (modificado)
+- apps/api/src/composition/http-stack.ts (modificado)
+
+### Change Log
+
+- 2026-04-07: Implementação completa da história 7.2 — jobs de treino em paper/demo, estado visível, rotas e testes.
+
+### Review Findings
+
+- [x] [Review][Patch] `POST /api/v1/training-jobs` não verifica modo demo/paper — **resolvido**: gate `403` quando `currentMode !== "demo"` (`training-jobs.routes.ts`, batch 2026-04-07).
+- [x] [Review][Patch] `policy_version` no job não reflectia a versão resolvida — **resolvido**: versão calculada antes de `jobRepo.create` (`training-job.service.ts`, batch 2026-04-07).

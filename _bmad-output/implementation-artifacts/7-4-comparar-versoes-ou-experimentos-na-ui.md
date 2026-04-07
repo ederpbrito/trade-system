@@ -2,13 +2,13 @@
 story_key: 7-4-comparar-versoes-ou-experimentos-na-ui
 epic: 7
 story: 4
-status: ready-for-dev
+status: done
 generated: "2026-04-05"
 ---
 
 # Story 7.4: Comparar versões ou experimentos na UI
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -39,9 +39,9 @@ para **FR24**.
 
 ## Tasks / Subtasks
 
-- [ ] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
-- [ ] Actualizar documentação em README se novos comandos/composes
-- [ ] Testes mínimos alinhados à história
+- [x] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
+- [x] Actualizar documentação em README se novos comandos/composes
+- [x] Testes mínimos alinhados à história
 
 ## Dev Notes
 
@@ -69,12 +69,33 @@ para **FR24**.
 
 ### Agent Model Used
 
-(preencher após implementação)
+claude-4.6-sonnet-medium
 
 ### Debug Log References
 
 ### Completion Notes List
 
+- Componente `ExperimentsPage` criado em `apps/web/src/domains/experiments/ui/`.
+- Tabela de experimentos com selecção por checkbox para comparação.
+- Comparador lado a lado com métricas: Profit Factor proxy, Drawdown simulado, Win Rate, Total trades.
+- Destaque visual do melhor valor em cada métrica (verde + ✓).
+- Botão "Treinar (paper/demo)" para disparar novo job de treino.
+- Lista de jobs recentes com estado visível (queued/running/success/failed).
+- Rota `/experiments` adicionada ao `AppRouter` com `RequireAuth`.
+- Navegação principal no `AppShell` com links Cockpit e Experimentos.
+- 6 testes de componente cobrindo: título, listagem, jobs, botão, comparador, estado vazio.
+
 ### File List
 
-(preencher após implementação)
+- apps/web/src/domains/experiments/ui/ExperimentsPage.tsx (novo)
+- apps/web/src/domains/experiments/ui/ExperimentsPage.test.tsx (novo)
+- apps/web/src/app/AppRouter.tsx (modificado — rota /experiments)
+- apps/web/src/app/AppShell.tsx (modificado — navegação com links)
+
+### Change Log
+
+- 2026-04-07: Implementação completa da história 7.4 — comparador de experimentos na UI, rota e testes.
+
+### Review Findings
+
+- [x] [Review][Patch] Cabeçalho "Melhor" com `BestIndicator` só para profit factor — **resolvido**: removido `BestIndicator`; coluna rotulada "Melhor (por linha)" (`ExperimentsPage.tsx`, batch 2026-04-07).

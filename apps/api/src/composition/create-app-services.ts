@@ -24,6 +24,12 @@ import { DecisionsService } from "../services/decisions/decisions.service.js";
 import { MetricsService } from "../services/decisions/metrics.service.js";
 import type { IAuditRepository } from "../services/decisions/ports.js";
 import { AssistantService } from "../services/assistant/assistant.service.js";
+import { RankingPolicyService } from "../services/ranking-policy/ranking-policy.service.js";
+import { TrainingJobService } from "../services/training/training-job.service.js";
+import { ExperimentsService } from "../services/experiments/experiments.service.js";
+import { DrizzleRankingPolicyRepository } from "../repositories/drizzle-ranking-policy.repository.js";
+import { DrizzleTrainingJobRepository } from "../repositories/drizzle-training-job.repository.js";
+import { DrizzleExperimentRepository } from "../repositories/drizzle-experiment.repository.js";
 
 export type AppServices = {
   identityService: IdentityService;
@@ -39,6 +45,9 @@ export type AppServices = {
   metricsService: MetricsService;
   auditRepo: IAuditRepository;
   assistantService: AssistantService;
+  rankingPolicyService: RankingPolicyService;
+  trainingJobService: TrainingJobService;
+  experimentsService: ExperimentsService;
 };
 
 export function createAppServices(env: Env): AppServices {
@@ -60,6 +69,13 @@ export function createAppServices(env: Env): AppServices {
   const tradingModeService = new TradingModeService(demoConnector, orderIntentRepo);
   const decisionsService = new DecisionsService(decisionRepo, auditRepo);
   const metricsService = new MetricsService(decisionRepo, orderIntentRepo);
+
+  const rankingPolicyRepo = new DrizzleRankingPolicyRepository();
+  const trainingJobRepo = new DrizzleTrainingJobRepository();
+  const experimentRepo = new DrizzleExperimentRepository();
+  const rankingPolicyService = new RankingPolicyService(rankingPolicyRepo);
+  const experimentsService = new ExperimentsService(experimentRepo);
+  const trainingJobService = new TrainingJobService(trainingJobRepo, experimentRepo, rankingPolicyRepo);
 
   return {
     identityService: new IdentityService(new DrizzleUserRepository(), new BcryptPasswordVerifier()),
@@ -87,5 +103,8 @@ export function createAppServices(env: Env): AppServices {
     decisionsService,
     metricsService,
     auditRepo,
+    rankingPolicyService,
+    trainingJobService,
+    experimentsService,
   };
 }

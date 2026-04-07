@@ -273,6 +273,91 @@ export const auditEvents = pgTable(
   }),
 );
 
+/**
+ * FR21 — política versionada que influencia ranking de candidatos.
+ * Cada registo representa uma versão imutável da política.
+ * A versão activa é a mais recente (maior version).
+ */
+export const rankingPolicies = pgTable(
+  "ranking_policies",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    /** Versão semântica incremental (1, 2, 3, …) */
+    version: integer("version").notNull(),
+    /** Nome descritivo da política */
+    name: text("name").notNull(),
+    /** Pesos de ordenação em JSON: { priorityWeight, timeWeight, horizonBonus } */
+    weightsJson: text("weights_json").notNull(),
+    /** Indica se esta é a versão activa */
+    isActive: boolean("is_active").notNull().default(false),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => ({
+    versionUniq: uniqueIndex("ranking_policies_version_uniq").on(t.version),
+  }),
+);
+
+/**
+ * FR22 — jobs de treino e avaliação em ambiente paper/demo.
+ * Estado: queued | running | success | failed
+ */
+export const trainingJobStatusEnum = pgEnum("training_job_status", ["queued", "running", "success", "failed"]);
+
+export const trainingJobs = pgTable(
+  "training_jobs",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    /** Versão de política alvo (pode ser nula se ainda não associada) */
+    policyVersion: integer("policy_version"),
+    status: trainingJobStatusEnum("status").notNull().default("queued"),
+    /** Parâmetros de entrada em JSON */
+    paramsJson: text("params_json"),
+    /** Mensagem de erro (se failed) */
+    errorMessage: text("error_message"),
+    startedAt: timestamp("started_at", { withTimezone: true }),
+    finishedAt: timestamp("finished_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => ({
+    userIdx: index("training_jobs_user_id_idx").on(t.userId),
+    statusIdx: index("training_jobs_status_idx").on(t.status),
+  }),
+);
+
+/**
+ * FR23 — persistência de métricas e artefactos de experimentos.
+ * Liga versão de política + dataset hash + métricas.
+ */
+export const experimentRuns = pgTable(
+  "experiment_runs",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    /** Job de treino que originou este experimento */
+    trainingJobId: uuid("training_job_id").references(() => trainingJobs.id, { onDelete: "set null" }),
+    /** Versão de política usada */
+    policyVersion: integer("policy_version").notNull(),
+    /** Hash/id do dataset utilizado */
+    datasetHash: text("dataset_hash").notNull(),
+    /** Métricas principais em JSON: { profitFactorProxy, simulatedDrawdown, winRate, totalTrades } */
+    metricsJson: text("metrics_json").notNull(),
+    /** Caminho seguro ao artefacto (relativo ao servidor; nunca URL pública) */
+    artifactPath: text("artifact_path"),
+    /** Rótulo opcional para identificação humana */
+    label: text("label"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => ({
+    userIdx: index("experiment_runs_user_id_idx").on(t.userId),
+    policyVersionIdx: index("experiment_runs_policy_version_idx").on(t.policyVersion),
+  }),
+);
+
 export type Instrument = typeof instruments.$inferSelect;
 export type WatchlistEntryRow = typeof watchlistEntries.$inferSelect;
 export type OhlcBar = typeof ohlcBars.$inferSelect;
@@ -283,3 +368,6 @@ export type RiskExceptionLogRow = typeof riskExceptionLog.$inferSelect;
 export type OrderIntentRow = typeof orderIntents.$inferSelect;
 export type DecisionLogRow = typeof decisionLog.$inferSelect;
 export type AuditEventRow = typeof auditEvents.$inferSelect;
+export type RankingPolicyRow = typeof rankingPolicies.$inferSelect;
+export type TrainingJobRow = typeof trainingJobs.$inferSelect;
+export type ExperimentRunRow = typeof experimentRuns.$inferSelect;

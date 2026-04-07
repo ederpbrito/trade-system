@@ -27,3 +27,8 @@
 - **Métricas truncadas a 1000 registos sem indicação ao utilizador** — `MetricsService.getSummary` usa `limit: 1000`; utilizadores com mais dados recebem métricas parciais sem aviso. Adicionar flag `isTruncated` e/ou paginação em épico de métricas avançadas.
 - **Auditoria sem `offset` (paginação incompleta além do `limit`)** — `AuditFilter` não tem `offset`; não é possível paginar além dos primeiros `limit` eventos. Adicionar cursor-based pagination em épico de auditoria avançada.
 - **Validação HTTP por cast em vez de schema declarativo** — rotas usam `req.body as { ... }` sem Zod/JSON Schema; tipos errados ou campos extra não são rejeitados na camada HTTP. Migrar para Zod em refactoring transversal de validação.
+
+## Deferred from: code review épico 7 — stories 7-1 a 7-4 (2026-04-07)
+
+- **`JSON.parse` sem validação em políticas e experimentos** — `drizzle-ranking-policy.repository.ts` (`weightsJson`) e `drizzle-experiment.repository.ts` (`metricsJson`): dados corruptos na BD podem causar 500 não tratado. Tratar com Zod/parse seguro ou erro de domínio mapeado.
+- **Treino síncrono no pedido HTTP** — `createAndRun` executa o ciclo completo na thread do pedido; aceitável no MVP com simulação instantânea, mas arrisca *timeouts* quando o treino for pesado. Considerar fila/worker noutro épico.

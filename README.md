@@ -81,9 +81,19 @@ Na raiz, `npm test` executa ambos quando configurado.
 
 ## Estrutura
 
-- `apps/web` — SPA, rotas `/login` e `/cockpit`
+- `apps/web` — SPA, rotas `/login`, `/cockpit` e `/experiments` (comparação de corridas de treino paper/demo)
 - `apps/api` — REST sob `/api/v1`, Drizzle em `src/db/`, migrações em `drizzle/migrations/`
 - `packages/shared` — esquemas Zod partilhados (ex.: login)
+
+### API — ranking, treino (demo) e experimentos (FR21–FR24)
+
+Endpoints com sessão autenticada (e CSRF em mutações, como nas restantes rotas):
+
+- `GET/POST /api/v1/ranking-policies`, `GET /api/v1/ranking-policies/active` — políticas de ranking versionadas
+- `GET /api/v1/training-jobs`, `GET /api/v1/training-jobs/:id`, `POST /api/v1/training-jobs` — jobs de treino (o `POST` só é aceite em **modo demo** do conetor de execução)
+- `GET /api/v1/experiments`, `GET /api/v1/experiments/:id` — registos de experimentos com métricas e caminho de artefacto (relativo ao servidor)
+
+Ordenação de candidatos por política activa: `GET /api/v1/opportunities/candidates?sort=policy`.
 
 ### Modularização e SOLID
 

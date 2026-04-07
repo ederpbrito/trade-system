@@ -2,13 +2,13 @@
 story_key: 7-3-persistencia-de-metricas-e-artefactos-de-experimentos
 epic: 7
 story: 3
-status: ready-for-dev
+status: done
 generated: "2026-04-05"
 ---
 
 # Story 7.3: Persistência de métricas e artefactos de experimentos
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -26,9 +26,9 @@ para **FR23**.
 
 ## Tasks / Subtasks
 
-- [ ] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
-- [ ] Actualizar documentação em README se novos comandos/composes
-- [ ] Testes mínimos alinhados à história
+- [x] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
+- [x] Actualizar documentação em README se novos comandos/composes
+- [x] Testes mínimos alinhados à história
 
 ## Dev Notes
 
@@ -56,12 +56,36 @@ para **FR23**.
 
 ### Agent Model Used
 
-(preencher após implementação)
+claude-4.6-sonnet-medium
 
 ### Debug Log References
 
 ### Completion Notes List
 
+- Tabela `experiment_runs` com `policy_version`, `dataset_hash`, `metrics_json`, `artifact_path` adicionada ao schema.
+- `ExperimentsService` com `getById` e `listForUser` implementados.
+- Porta `IExperimentRepository` + `DrizzleExperimentRepository` implementados.
+- Métricas: `profitFactorProxy`, `simulatedDrawdown`, `winRate`, `totalTrades` — armazenadas em JSON.
+- `artifact_path` armazenado como caminho relativo ao servidor (nunca URL pública).
+- Rotas `GET /api/v1/experiments` e `GET /api/v1/experiments/:id` com verificação de ownership.
+- `TrainingJobService` cria automaticamente um `ExperimentRun` após cada job de treino bem-sucedido.
+- 3 testes unitários para `ExperimentsService`.
+
 ### File List
 
-(preencher após implementação)
+- apps/api/src/services/experiments/ports.ts (novo)
+- apps/api/src/services/experiments/experiments.service.ts (novo)
+- apps/api/src/services/experiments/experiments.service.test.ts (novo)
+- apps/api/src/repositories/drizzle-experiment.repository.ts (novo)
+- apps/api/src/routes/v1/experiments.routes.ts (novo)
+- apps/api/src/composition/create-app-services.ts (modificado)
+- apps/api/src/composition/http-stack.ts (modificado)
+
+### Change Log
+
+- 2026-04-07: Implementação completa da história 7.3 — persistência de métricas e artefactos, rotas e testes.
+
+### Review Findings
+
+- [x] [Review][Patch] `artifact_path` no fluxo automático — **resolvido**: `artifacts/paper-demo/{jobId}.json` em `TrainingJobService.createAndRun` (batch 2026-04-07).
+- [x] [Review][Defer] `JSON.parse(row.metricsJson)` em `drizzle-experiment.repository.ts` sem `try/catch` — métricas inválidas na BD derrubam a listagem; alinhar com hardening de parsing noutros repositórios.

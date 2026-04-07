@@ -34,6 +34,12 @@ import type { MetricsService } from "../services/decisions/metrics.service.js";
 import type { IAuditRepository } from "../services/decisions/ports.js";
 import riskRoutes from "../routes/v1/risk.routes.js";
 import assistantRoutes from "../routes/v1/assistant.routes.js";
+import rankingPoliciesRoutes from "../routes/v1/ranking-policies.routes.js";
+import trainingJobsRoutes from "../routes/v1/training-jobs.routes.js";
+import experimentsRoutes from "../routes/v1/experiments.routes.js";
+import type { RankingPolicyService } from "../services/ranking-policy/ranking-policy.service.js";
+import type { TrainingJobService } from "../services/training/training-job.service.js";
+import type { ExperimentsService } from "../services/experiments/experiments.service.js";
 
 export type HttpStackOptions = {
   identityService: IdentityService;
@@ -49,6 +55,9 @@ export type HttpStackOptions = {
   decisionsService: DecisionsService;
   metricsService: MetricsService;
   auditRepo: IAuditRepository;
+  rankingPolicyService: RankingPolicyService;
+  trainingJobService: TrainingJobService;
+  experimentsService: ExperimentsService;
 };
 
 /**
@@ -101,6 +110,7 @@ export async function registerHttpStack(app: FastifyInstance, env: Env, deps: Ht
   await app.register(opportunitiesRoutes, {
     opportunitiesPreview: deps.opportunitiesPreview,
     opportunitiesCandidates: deps.opportunitiesCandidates,
+    rankingPolicyService: deps.rankingPolicyService,
   });
   await app.register(watchlistRoutes, { watchlist: deps.watchlist });
   await app.register(instrumentsRoutes, { watchlist: deps.watchlist });
@@ -119,5 +129,11 @@ export async function registerHttpStack(app: FastifyInstance, env: Env, deps: Ht
   });
   await app.register(auditRoutes, { auditRepo: deps.auditRepo });
   await app.register(metricsRoutes, { metricsService: deps.metricsService });
+  await app.register(rankingPoliciesRoutes, { rankingPolicyService: deps.rankingPolicyService });
+  await app.register(trainingJobsRoutes, {
+    trainingJobService: deps.trainingJobService,
+    tradingModeService: deps.tradingModeService,
+  });
+  await app.register(experimentsRoutes, { experimentsService: deps.experimentsService });
   await app.register(marketStreamPlugin);
 }

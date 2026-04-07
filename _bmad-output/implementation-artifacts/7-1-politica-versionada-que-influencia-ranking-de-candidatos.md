@@ -2,13 +2,13 @@
 story_key: 7-1-politica-versionada-que-influencia-ranking-de-candidatos
 epic: 7
 story: 1
-status: ready-for-dev
+status: done
 generated: "2026-04-05"
 ---
 
 # Story 7.1: Política versionada que influencia ranking de candidatos
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -26,9 +26,9 @@ para **FR21**.
 
 ## Tasks / Subtasks
 
-- [ ] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
-- [ ] Actualizar documentação em README se novos comandos/composes
-- [ ] Testes mínimos alinhados à história
+- [x] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
+- [x] Actualizar documentação em README se novos comandos/composes
+- [x] Testes mínimos alinhados à história
 
 ## Dev Notes
 
@@ -56,12 +56,41 @@ para **FR21**.
 
 ### Agent Model Used
 
-(preencher após implementação)
+claude-4.6-sonnet-medium
 
 ### Debug Log References
 
 ### Completion Notes List
 
+- Tabela `ranking_policies` adicionada ao schema DB com versão incremental, pesos JSON e flag `isActive`.
+- Migração `0006_epic7_ranking_training_experiments.sql` criada.
+- `RankingPolicyService` + porta `IRankingPolicyRepository` + `DrizzleRankingPolicyRepository` implementados.
+- Função `computePolicyScore` e `sortCandidatesByPolicy` adicionadas ao `candidate-sort.ts` (FR21).
+- Rota `GET /api/v1/ranking-policies`, `GET /api/v1/ranking-policies/active`, `POST /api/v1/ranking-policies` criadas.
+- Resposta de `GET /api/v1/opportunities/candidates` inclui `rankingPolicy: { version, name }` quando há política activa.
+- Suporte a `?sort=policy` na rota de candidatos para ordenação por política versionada.
+- 4 testes unitários para `RankingPolicyService` + 5 testes para `computePolicyScore`/`sortCandidatesByPolicy`.
+
 ### File List
 
-(preencher após implementação)
+- apps/api/src/db/schema.ts (modificado — tabelas ranking_policies, training_jobs, experiment_runs)
+- apps/api/drizzle/migrations/0006_epic7_ranking_training_experiments.sql (novo)
+- apps/api/src/services/ranking-policy/ports.ts (novo)
+- apps/api/src/services/ranking-policy/ranking-policy.service.ts (novo)
+- apps/api/src/services/ranking-policy/ranking-policy.service.test.ts (novo)
+- apps/api/src/repositories/drizzle-ranking-policy.repository.ts (novo)
+- apps/api/src/services/opportunities/candidate-sort.ts (modificado — computePolicyScore, sortCandidatesByPolicy)
+- apps/api/src/services/opportunities/candidate-sort-policy.test.ts (novo)
+- apps/api/src/routes/v1/ranking-policies.routes.ts (novo)
+- apps/api/src/routes/v1/opportunities.routes.ts (modificado — suporte a sort=policy e rankingPolicy nos metadados)
+- apps/api/src/composition/create-app-services.ts (modificado)
+- apps/api/src/composition/http-stack.ts (modificado)
+
+### Change Log
+
+- 2026-04-07: Implementação completa da história 7.1 — política versionada, score por política, rotas e testes.
+
+### Review Findings
+
+- [x] [Review][Patch] Documentar no `README.md` da raiz as rotas do épico 7 (`/api/v1/ranking-policies`, `/api/v1/training-jobs`, `/api/v1/experiments`) e a página SPA `/experiments` — **resolvido** (batch review 2026-04-07).
+- [x] [Review][Defer] `JSON.parse(row.weightsJson)` em `drizzle-ranking-policy.repository.ts` sem validação — dados corruptos na BD podem derrubar o pedido com 500; hardening transversal.

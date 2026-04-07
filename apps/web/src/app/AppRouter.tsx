@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { LoginPage, RequireAuth } from "../domains/identity";
 import { CockpitPage } from "../domains/cockpit/ui/CockpitPage";
+import { ExperimentsPage } from "../domains/experiments/ui/ExperimentsPage";
 
 export function AppRouter() {
   return (
@@ -12,6 +13,14 @@ export function AppRouter() {
         element={
           <RequireAuth>
             <CockpitPage />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/experiments"
+        element={
+          <RequireAuth>
+            <ExperimentsPage />
           </RequireAuth>
         }
       />

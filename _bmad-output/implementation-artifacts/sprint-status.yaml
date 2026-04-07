@@ -26,7 +26,7 @@
 #   - done: Retrospective has been completed
 
 generated: "2026-04-05"
-last_updated: "2026-04-07" # épico 6 histórias 6-1 a 6-4 done após code review
+last_updated: "2026-04-07" # épico 7: histórias 7-1 a 7-4 fechadas após batch de patches pós-review
 # epic-2: correcções review + fecho épico 2026-04-05
 project: tradesystem
 project_key: NOKEY
@@ -85,9 +85,9 @@ development_status:
   6-4-ui-de-interaccao-estruturada-extensivel-a-conversacional: done
   epic-6-retrospective: optional
 
-  epic-7: in-progress
-  7-1-politica-versionada-que-influencia-ranking-de-candidatos: ready-for-dev
-  7-2-jobs-de-treino-e-avaliacao-em-paper-demo: ready-for-dev
-  7-3-persistencia-de-metricas-e-artefactos-de-experimentos: ready-for-dev
-  7-4-comparar-versoes-ou-experimentos-na-ui: ready-for-dev
+  epic-7: done
+  7-1-politica-versionada-que-influencia-ranking-de-candidatos: done
+  7-2-jobs-de-treino-e-avaliacao-em-paper-demo: done
+  7-3-persistencia-de-metricas-e-artefactos-de-experimentos: done
+  7-4-comparar-versoes-ou-experimentos-na-ui: done
   epic-7-retrospective: optional
