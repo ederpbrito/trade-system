@@ -2,13 +2,13 @@
 story_key: 5-4-trilha-auditavel-de-decisoes-e-execucoes
 epic: 5
 story: 4
-status: ready-for-dev
+status: review
 generated: "2026-04-05"
 ---
 
 # Story 5.4: Trilha auditável de decisões e execuções
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -26,9 +26,9 @@ para **FR29**.
 
 ## Tasks / Subtasks
 
-- [ ] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
-- [ ] Actualizar documentação em README se novos comandos/composes
-- [ ] Testes mínimos alinhados à história
+- [x] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
+- [x] Actualizar documentação em README se novos comandos/composes
+- [x] Testes mínimos alinhados à história
 
 ## Dev Notes
 
@@ -56,12 +56,28 @@ para **FR29**.
 
 ### Agent Model Used
 
-(preencher após implementação)
+claude-4.6-sonnet-medium (2026-04-07)
 
 ### Debug Log References
 
+Sem bloqueios.
+
 ### Completion Notes List
+
+- Tabela `audit_events` append-only com campos: userId, eventType, mode, timeframe, horizonte, correlationId (requestId do pedido HTTP), entityId, entityType, payloadJson, occurredAt (timestamp UTC).
+- `DrizzleAuditRepository` persiste e consulta eventos com filtros (eventType, from, to, limit).
+- Eventos emitidos automaticamente em `DecisionsService.recordDecision` (tipo `decision.created`) e em `execution.routes.ts` (tipo `execution.intent`).
+- Rota `GET /api/v1/audit/events` expõe trilha auditável com filtros.
+- UI em `DecisionHistoryPanel.tsx` tab "Trilha (FR29)" mostra eventos com timestamp UTC, modo, janela e ids de correlação.
+- Falha de auditoria não bloqueia a operação principal (catch silencioso com log).
 
 ### File List
 
-(preencher após implementação)
+- `apps/api/src/repositories/drizzle-audit.repository.ts` (novo)
+- `apps/api/src/routes/v1/audit.routes.ts` (novo)
+- `apps/api/src/db/schema.ts` (modificado — tabela audit_events)
+- `apps/web/src/domains/cockpit/ui/DecisionHistoryPanel.tsx` (novo — tab trilha)
+
+## Change Log
+
+- 2026-04-07: Implementação completa da Story 5.4 — trilha auditável append-only com timestamp UTC, janela, modo e ids de correlação.

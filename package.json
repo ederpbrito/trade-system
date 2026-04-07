@@ -10,9 +10,12 @@
     "dev": "concurrently -k -n api,web -c green,blue \"npm run dev -w api\" \"wait-on http-get://127.0.0.1:3001/api/v1/health -t 120000 -i 500 && npm run dev -w web\"",
     "build": "npm run build -w @tradesystem/shared && npm run build -w api && npm run build -w web",
     "test": "npm run test -w api && npm run test -w web",
-    "lint": "npm run lint -w api --if-present && npm run lint -w web --if-present"
+    "lint": "npm run lint -w api --if-present && npm run lint -w web --if-present",
+    "test:e2e": "playwright test",
+    "test:e2e:report": "playwright show-report"
   },
   "devDependencies": {
+    "@playwright/test": "^1.59.1",
     "concurrently": "^9.1.2",
     "wait-on": "^8.0.1"
   }

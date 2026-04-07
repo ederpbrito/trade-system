@@ -2,13 +2,13 @@
 story_key: 5-1-intencao-de-execucao-em-modo-demonstracao
 epic: 5
 story: 1
-status: ready-for-dev
+status: review
 generated: "2026-04-05"
 ---
 
 # Story 5.1: Intenção de execução em modo demonstração
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -27,9 +27,9 @@ para **FR17**.
 
 ## Tasks / Subtasks
 
-- [ ] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
-- [ ] Actualizar documentação em README se novos comandos/composes
-- [ ] Testes mínimos alinhados à história
+- [x] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
+- [x] Actualizar documentação em README se novos comandos/composes
+- [x] Testes mínimos alinhados à história
 
 ## Dev Notes
 
@@ -57,12 +57,39 @@ para **FR17**.
 
 ### Agent Model Used
 
-(preencher após implementação)
+claude-4.6-sonnet-medium (2026-04-07)
 
 ### Debug Log References
 
+Sem bloqueios.
+
 ### Completion Notes List
+
+- Implementado `DemoExecutionProvider` em `apps/api/src/connectors/demo-execution.provider.ts` — conetor stub que simula ordens sem execução real.
+- Implementado `TradingModeService` em `apps/api/src/services/trading-mode/` com portas (`ports.ts`) e serviço (`trading-mode.service.ts`).
+- Repositório Drizzle `DrizzleOrderIntentRepository` persiste intenções na tabela `order_intents`.
+- Rota `POST /api/v1/execution/intent` submete intenção demo; rota `GET /api/v1/execution/mode` expõe modo actual.
+- Idempotência implementada: se `idempotencyKey` já existir, devolve registo existente sem chamar conetor.
+- Migração `0004_epic5_execution_decisions_audit.sql` cria tabelas `order_intents`, `decision_log`, `audit_events` e enum `trading_mode`.
+- Testes unitários: 5 testes passam em `trading-mode.service.test.ts`.
 
 ### File List
 
-(preencher após implementação)
+- `apps/api/src/connectors/demo-execution.provider.ts` (novo)
+- `apps/api/src/services/trading-mode/ports.ts` (novo)
+- `apps/api/src/services/trading-mode/trading-mode.service.ts` (novo)
+- `apps/api/src/services/trading-mode/trading-mode.service.test.ts` (novo)
+- `apps/api/src/repositories/drizzle-order-intent.repository.ts` (novo)
+- `apps/api/src/routes/v1/execution.routes.ts` (novo)
+- `apps/api/src/routes/v1/execution.integration.test.ts` (novo)
+- `apps/api/src/db/schema.ts` (modificado — tabelas order_intents, decision_log, audit_events, enum trading_mode)
+- `apps/api/drizzle/migrations/0004_epic5_execution_decisions_audit.sql` (novo)
+- `apps/api/src/composition/create-app-services.ts` (modificado)
+- `apps/api/src/composition/http-stack.ts` (modificado)
+- `apps/api/src/app.ts` (modificado)
+- `apps/web/src/domains/cockpit/ui/ExecutionPanel.tsx` (novo)
+- `apps/web/src/domains/cockpit/ui/CockpitPage.tsx` (modificado)
+
+## Change Log
+
+- 2026-04-07: Implementação completa da Story 5.1 — conetor demo, serviço de modo de negociação, repositório, rotas e UI de execução.

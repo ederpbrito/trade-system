@@ -1,0 +1,1 @@
+ALTER TABLE "order_intents" ADD CONSTRAINT "order_intents_user_idempotency_key_uniq" UNIQUE("user_id","idempotency_key");

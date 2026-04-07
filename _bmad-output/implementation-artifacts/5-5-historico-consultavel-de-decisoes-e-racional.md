@@ -2,13 +2,13 @@
 story_key: 5-5-historico-consultavel-de-decisoes-e-racional
 epic: 5
 story: 5
-status: ready-for-dev
+status: review
 generated: "2026-04-05"
 ---
 
 # Story 5.5: Histórico consultável de decisões e racional
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -26,9 +26,9 @@ para **FR30**.
 
 ## Tasks / Subtasks
 
-- [ ] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
-- [ ] Actualizar documentação em README se novos comandos/composes
-- [ ] Testes mínimos alinhados à história
+- [x] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
+- [x] Actualizar documentação em README se novos comandos/composes
+- [x] Testes mínimos alinhados à história
 
 ## Dev Notes
 
@@ -56,12 +56,25 @@ para **FR30**.
 
 ### Agent Model Used
 
-(preencher após implementação)
+claude-4.6-sonnet-medium (2026-04-07)
 
 ### Debug Log References
 
+Sem bloqueios.
+
 ### Completion Notes List
+
+- Rota `GET /api/v1/decisions` com filtros: `symbolInternal`, `from` (ISO date), `to` (ISO date), `limit`, `offset`.
+- Rota `GET /api/v1/decisions/:id` para detalhe de uma decisão (com verificação de ownership).
+- `DecisionHistoryPanel.tsx` tab "Decisões (FR30)": lista com filtros por ativo e intervalo de datas, detalhe expansível com racional, tags e nota.
+- Detalhe mostra: tipo de decisão (badge colorido), modo, símbolo, janela (TF/horizonte), data, racional completo, tags e nota.
+- Filtros aplicados no servidor; UI envia query params.
 
 ### File List
 
-(preencher após implementação)
+- `apps/api/src/routes/v1/decisions.routes.ts` (novo — GET /api/v1/decisions com filtros)
+- `apps/web/src/domains/cockpit/ui/DecisionHistoryPanel.tsx` (novo — histórico com filtros e detalhe)
+
+## Change Log
+
+- 2026-04-07: Implementação completa da Story 5.5 — histórico consultável de decisões com filtros por ativo/data e detalhe com racional.

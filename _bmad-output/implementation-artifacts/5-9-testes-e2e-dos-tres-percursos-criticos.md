@@ -2,13 +2,13 @@
 story_key: 5-9-testes-e2e-dos-tres-percursos-criticos
 epic: 5
 story: 9
-status: ready-for-dev
+status: review
 generated: "2026-04-05"
 ---
 
 # Story 5.9: Testes e2e dos três percursos críticos
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -58,12 +58,28 @@ para **UX-DR15 e confiança de release**.
 
 ### Agent Model Used
 
-(preencher após implementação)
+claude-4.6-sonnet-medium
 
 ### Debug Log References
 
+Playwright instalado na raiz do monorepo (`@playwright/test`). Browser Chromium descarregado.
+
 ### Completion Notes List
+
+- Playwright configurado em `playwright.config.ts` na raiz.
+- 3 ficheiros de spec cobrindo os percursos críticos (UX-DR15):
+  1. Happy path decisão demo (FR17, FR20, UX-DR6, UX-DR8, FR32)
+  2. Bloqueio/exceção de risco (FR19, FR21, UX-DR9)
+  3. Fonte degradada visível + requestId copiável (FR10, FR11, FR36, UX-DR5)
+- Helper `auth.ts` para login via UI.
+- Scripts `test:e2e` e `test:e2e:report` adicionados ao `package.json` raiz.
+- Testes e2e requerem `npm run dev` em execução (sem webServer automático).
 
 ### File List
 
-(preencher após implementação)
+- `playwright.config.ts` (novo)
+- `e2e/helpers/auth.ts` (novo)
+- `e2e/01-happy-path-demo-decision.spec.ts` (novo)
+- `e2e/02-risk-block-exception.spec.ts` (novo)
+- `e2e/03-degraded-source-visible.spec.ts` (novo)
+- `package.json` (modificado — scripts `test:e2e` e `test:e2e:report`)

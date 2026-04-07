@@ -23,6 +23,10 @@ function mergeServices(env: Env, buildOpts?: BuildAppOptions): AppServices {
     watchlist: o?.watchlist ?? defaults.watchlist,
     integrationCredentials: o?.integrationCredentials ?? defaults.integrationCredentials,
     riskService: o?.riskService ?? defaults.riskService,
+    tradingModeService: o?.tradingModeService ?? defaults.tradingModeService,
+    decisionsService: o?.decisionsService ?? defaults.decisionsService,
+    metricsService: o?.metricsService ?? defaults.metricsService,
+    auditRepo: o?.auditRepo ?? defaults.auditRepo,
   };
 }
 

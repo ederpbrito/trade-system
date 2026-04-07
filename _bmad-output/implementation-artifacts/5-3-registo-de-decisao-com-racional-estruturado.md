@@ -2,13 +2,13 @@
 story_key: 5-3-registo-de-decisao-com-racional-estruturado
 epic: 5
 story: 3
-status: ready-for-dev
+status: review
 generated: "2026-04-05"
 ---
 
 # Story 5.3: Registo de decisão com racional estruturado
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -27,9 +27,9 @@ para **FR20 e UX-DR8**.
 
 ## Tasks / Subtasks
 
-- [ ] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
-- [ ] Actualizar documentação em README se novos comandos/composes
-- [ ] Testes mínimos alinhados à história
+- [x] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
+- [x] Actualizar documentação em README se novos comandos/composes
+- [x] Testes mínimos alinhados à história
 
 ## Dev Notes
 
@@ -57,12 +57,34 @@ para **FR20 e UX-DR8**.
 
 ### Agent Model Used
 
-(preencher após implementação)
+claude-4.6-sonnet-medium (2026-04-07)
 
 ### Debug Log References
 
+Sem bloqueios.
+
 ### Completion Notes List
+
+- Tabela `decision_log` criada no schema Drizzle com campos: decision, instrumentId, symbolInternal, timeframe, horizonte, candidateId, orderIntentId, rationale (obrigatório), tagsJson, note, mode.
+- `DecisionsService` em `apps/api/src/services/decisions/` com validação de racional obrigatório e tipo de decisão.
+- `DrizzleDecisionRepository` persiste e consulta decisões com filtros.
+- Rota `POST /api/v1/decisions` persiste decisão associada à janela e ao candidato.
+- Formulário `DecisionForm.tsx` (UX-DR8): campos decisão (radio operar/não operar), motivo (obrigatório), tags (opcional, multi-select), nota breve (opcional).
+- Validação no cliente impede submissão com racional vazio.
+- Validação no servidor rejeita racional vazio com código `DECISION_RATIONALE_REQUIRED`.
+- 7 testes unitários passam em `decisions.service.test.ts`.
 
 ### File List
 
-(preencher após implementação)
+- `apps/api/src/services/decisions/ports.ts` (novo)
+- `apps/api/src/services/decisions/decisions.service.ts` (novo)
+- `apps/api/src/services/decisions/decisions.service.test.ts` (novo)
+- `apps/api/src/repositories/drizzle-decision.repository.ts` (novo)
+- `apps/api/src/routes/v1/decisions.routes.ts` (novo)
+- `apps/api/src/routes/v1/decisions.integration.test.ts` (novo)
+- `apps/web/src/domains/cockpit/ui/DecisionForm.tsx` (novo)
+- `apps/api/src/db/schema.ts` (modificado — tabela decision_log)
+
+## Change Log
+
+- 2026-04-07: Implementação completa da Story 5.3 — registo de decisão com racional estruturado, validação e formulário UX-DR8.

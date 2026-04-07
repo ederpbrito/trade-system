@@ -2,13 +2,13 @@
 story_key: 5-2-distincao-visual-e-logica-demo-vs-producao-gate-de-producao
 epic: 5
 story: 2
-status: ready-for-dev
+status: review
 generated: "2026-04-05"
 ---
 
 # Story 5.2: Distinção visual e lógica demo vs produção + gate de produção
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -28,9 +28,9 @@ para **FR18, FR19, UX-DR6**.
 
 ## Tasks / Subtasks
 
-- [ ] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
-- [ ] Actualizar documentação em README se novos comandos/composes
-- [ ] Testes mínimos alinhados à história
+- [x] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
+- [x] Actualizar documentação em README se novos comandos/composes
+- [x] Testes mínimos alinhados à história
 
 ## Dev Notes
 
@@ -58,12 +58,25 @@ para **FR18, FR19, UX-DR6**.
 
 ### Agent Model Used
 
-(preencher após implementação)
+claude-4.6-sonnet-medium (2026-04-07)
 
 ### Debug Log References
 
+Sem bloqueios.
+
 ### Completion Notes List
+
+- Badge DEMO persistente implementado em `ExecutionPanel.tsx` (UX-DR6): barra amarela com badge "DEMO" sempre visível na área de execução.
+- Badge de PRODUÇÃO com cor vermelha quando modo for production.
+- Gate de produção (FR19): rota `POST /api/v1/execution/intent` devolve 403 com `PRODUCTION_GATE_BLOCKED` e lista de critérios pendentes quando modo é production.
+- UI mostra mensagem de bloqueio com critérios pendentes quando modo é production.
+- Rota `GET /api/v1/execution/mode` expõe modo actual para a UI.
 
 ### File List
 
-(preencher após implementação)
+- `apps/web/src/domains/cockpit/ui/ExecutionPanel.tsx` (novo — badge DEMO/PRODUÇÃO + gate UI)
+- `apps/api/src/routes/v1/execution.routes.ts` (novo — gate de produção FR19)
+
+## Change Log
+
+- 2026-04-07: Implementação completa da Story 5.2 — badge DEMO persistente, gate de produção com mensagem de critérios pendentes.

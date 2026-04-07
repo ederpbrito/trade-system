@@ -2,13 +2,13 @@
 story_key: 5-8-superficie-de-erro-com-requestid-copiavel
 epic: 5
 story: 8
-status: ready-for-dev
+status: review
 generated: "2026-04-05"
 ---
 
 # Story 5.8: Superfície de erro com requestId copiável
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -56,12 +56,25 @@ para **FR36 e UX-DR12**.
 
 ### Agent Model Used
 
-(preencher após implementação)
+claude-4.6-sonnet-medium
 
 ### Debug Log References
 
+Corrigido: adicionado `cleanup` ao `setup.ts` do vitest para evitar contaminação entre testes.
+
 ### Completion Notes List
+
+- Componente `ApiErrorDisplay` com exibição de `code`, `message` e `requestId` copiável.
+- Botão "Copiar" usa `navigator.clipboard.writeText` com fallback para `execCommand`.
+- Hook `useApiError` para extracção e gestão de erros de API em qualquer componente.
+- Integrado no `CockpitPage` para erros de watchlist com requestId.
+- `role="alert"` para acessibilidade.
+- Testes unitários: 6 testes passam.
 
 ### File List
 
-(preencher após implementação)
+- `apps/web/src/shared/ui/ApiErrorDisplay.tsx` (novo)
+- `apps/web/src/shared/ui/ApiErrorDisplay.test.tsx` (novo)
+- `apps/web/src/shared/http/useApiError.ts` (novo)
+- `apps/web/src/domains/cockpit/ui/CockpitPage.tsx` (modificado — integração ApiErrorDisplay e MetricsPanel)
+- `apps/web/src/test/setup.ts` (modificado — adicionado cleanup automático)

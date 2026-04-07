@@ -2,13 +2,13 @@
 story_key: 5-7-avisos-de-incerteza-e-ausencia-de-garantia
 epic: 5
 story: 7
-status: ready-for-dev
+status: review
 generated: "2026-04-05"
 ---
 
 # Story 5.7: Avisos de incerteza e ausência de garantia
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -57,12 +57,23 @@ para **FR32 e UX-DR14**.
 
 ### Agent Model Used
 
-(preencher após implementação)
+claude-4.6-sonnet-medium
 
 ### Debug Log References
 
+Sem erros relevantes.
+
 ### Completion Notes List
+
+- Componente `UncertaintyDisclaimer` com 3 variantes: `banner`, `inline` (default), `compact`.
+- Contraste WCAG AA: texto `#78350f` sobre fundo âmbar claro `#fffbeb` (UX-DR13).
+- Integrado em `ExecutionPanel` (variante compact) e `DecisionForm` (variante compact com contexto do símbolo).
+- `role="note"` e `aria-label` para acessibilidade.
+- Testes unitários: 6 testes passam.
 
 ### File List
 
-(preencher após implementação)
+- `apps/web/src/shared/ui/UncertaintyDisclaimer.tsx` (novo)
+- `apps/web/src/shared/ui/UncertaintyDisclaimer.test.tsx` (novo)
+- `apps/web/src/domains/cockpit/ui/ExecutionPanel.tsx` (modificado — aviso compact adicionado)
+- `apps/web/src/domains/cockpit/ui/DecisionForm.tsx` (modificado — aviso compact com contexto)

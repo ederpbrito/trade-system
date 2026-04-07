@@ -2,13 +2,13 @@
 story_key: 5-6-vistas-basicas-de-desempenho-agregados
 epic: 5
 story: 6
-status: ready-for-dev
+status: review
 generated: "2026-04-05"
 ---
 
 # Story 5.6: Vistas básicas de desempenho / agregados
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -56,12 +56,28 @@ para **FR31** (MVP simples).
 
 ### Agent Model Used
 
-(preencher após implementação)
+claude-4.6-sonnet-medium
 
 ### Debug Log References
 
+Sem erros relevantes.
+
 ### Completion Notes List
+
+- `MetricsService` implementado com agregados: total decisões, contagem por tipo/modo, taxa de operar, total intenções, taxa de fill, período dos dados.
+- Rota `GET /api/v1/metrics/summary` protegida por sessão.
+- Componente `MetricsPanel.tsx` com cards de métricas e botão de refresh.
+- Integrado na terceira coluna do cockpit (desktop) e em linha (mid/narrow).
+- Testes unitários: 4 testes passam.
 
 ### File List
 
-(preencher após implementação)
+- `apps/api/src/services/decisions/metrics.service.ts` (novo)
+- `apps/api/src/services/decisions/metrics.service.test.ts` (novo)
+- `apps/api/src/routes/v1/metrics.routes.ts` (novo)
+- `apps/api/src/services/trading-mode/ports.ts` (modificado — adicionado `findByUserId` e `OrderIntentFilter`)
+- `apps/api/src/repositories/drizzle-order-intent.repository.ts` (modificado — implementado `findByUserId`)
+- `apps/api/src/composition/create-app-services.ts` (modificado — adicionado `metricsService`)
+- `apps/api/src/composition/http-stack.ts` (modificado — registado `metricsRoutes`)
+- `apps/api/src/app.ts` (modificado — `metricsService` no merge)
+- `apps/web/src/domains/cockpit/ui/MetricsPanel.tsx` (novo)
