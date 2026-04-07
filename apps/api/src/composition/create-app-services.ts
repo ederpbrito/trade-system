@@ -6,6 +6,9 @@ import { DrizzleOhlcRepository } from "../repositories/drizzle-ohlc.repository.j
 import { DrizzleWatchlistRepository } from "../repositories/drizzle-watchlist.repository.js";
 import { DrizzleRiskLimitsRepository } from "../repositories/drizzle-risk-limits.repository.js";
 import { DrizzleRiskExceptionRepository } from "../repositories/drizzle-risk-exception.repository.js";
+import { DrizzleOrderIntentRepository } from "../repositories/drizzle-order-intent.repository.js";
+import { DrizzleDecisionRepository } from "../repositories/drizzle-decision.repository.js";
+import { DrizzleAuditRepository } from "../repositories/drizzle-audit.repository.js";
 import { DataSourcesService } from "../services/data-sources/data-sources.service.js";
 import { IntegrationCredentialsService } from "../services/integration-credentials/integration-credentials.service.js";
 import { MarketDataIngestionService } from "../services/market-data/market-data-ingestion.service.js";
@@ -15,6 +18,12 @@ import { BcryptPasswordVerifier, IdentityService } from "../services/identity/in
 import { DrizzleUserRepository } from "../repositories/drizzle-user.repository.js";
 import { WatchlistService } from "../services/watchlist/watchlist.service.js";
 import { RiskService } from "../services/risk/risk.service.js";
+import { TradingModeService } from "../services/trading-mode/trading-mode.service.js";
+import { DemoExecutionProvider } from "../connectors/demo-execution.provider.js";
+import { DecisionsService } from "../services/decisions/decisions.service.js";
+import { MetricsService } from "../services/decisions/metrics.service.js";
+import type { IAuditRepository } from "../services/decisions/ports.js";
+import { AssistantService } from "../services/assistant/assistant.service.js";
 
 export type AppServices = {
   identityService: IdentityService;
@@ -25,6 +34,11 @@ export type AppServices = {
   watchlist: WatchlistService;
   integrationCredentials: IntegrationCredentialsService;
   riskService: RiskService;
+  tradingModeService: TradingModeService;
+  decisionsService: DecisionsService;
+  metricsService: MetricsService;
+  auditRepo: IAuditRepository;
+  assistantService: AssistantService;
 };
 
 export function createAppServices(env: Env): AppServices {
@@ -37,6 +51,15 @@ export function createAppServices(env: Env): AppServices {
 
   const riskLimitsRepo = new DrizzleRiskLimitsRepository();
   const riskExceptionRepo = new DrizzleRiskExceptionRepository();
+
+  const orderIntentRepo = new DrizzleOrderIntentRepository();
+  const decisionRepo = new DrizzleDecisionRepository();
+  const auditRepo = new DrizzleAuditRepository();
+
+  const demoConnector = new DemoExecutionProvider();
+  const tradingModeService = new TradingModeService(demoConnector, orderIntentRepo);
+  const decisionsService = new DecisionsService(decisionRepo, auditRepo);
+  const metricsService = new MetricsService(decisionRepo, orderIntentRepo);
 
   return {
     identityService: new IdentityService(new DrizzleUserRepository(), new BcryptPasswordVerifier()),
@@ -59,5 +82,10 @@ export function createAppServices(env: Env): AppServices {
     watchlist,
     integrationCredentials: new IntegrationCredentialsService(integrationRepo, env),
     riskService: new RiskService(riskLimitsRepo, riskExceptionRepo),
+    assistantService: new AssistantService(),
+    tradingModeService,
+    decisionsService,
+    metricsService,
+    auditRepo,
   };
 }

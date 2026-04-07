@@ -15,6 +15,10 @@ import marketDataRoutes from "../routes/v1/market-data.routes.js";
 import marketStreamPlugin from "../routes/v1/market-stream.js";
 import opportunitiesRoutes from "../routes/v1/opportunities.routes.js";
 import watchlistRoutes from "../routes/v1/watchlist.routes.js";
+import executionRoutes from "../routes/v1/execution.routes.js";
+import decisionsRoutes from "../routes/v1/decisions.routes.js";
+import auditRoutes from "../routes/v1/audit.routes.js";
+import metricsRoutes from "../routes/v1/metrics.routes.js";
 import type { DataSourcesService } from "../services/data-sources/data-sources.service.js";
 import type { IntegrationCredentialsService } from "../services/integration-credentials/integration-credentials.service.js";
 import type { MarketDataIngestionService } from "../services/market-data/market-data-ingestion.service.js";
@@ -23,7 +27,13 @@ import type { OpportunitiesPreviewService } from "../services/opportunities/oppo
 import type { IdentityService } from "../services/identity/index.js";
 import type { WatchlistService } from "../services/watchlist/watchlist.service.js";
 import type { RiskService } from "../services/risk/risk.service.js";
+import type { AssistantService } from "../services/assistant/assistant.service.js";
+import type { TradingModeService } from "../services/trading-mode/trading-mode.service.js";
+import type { DecisionsService } from "../services/decisions/decisions.service.js";
+import type { MetricsService } from "../services/decisions/metrics.service.js";
+import type { IAuditRepository } from "../services/decisions/ports.js";
 import riskRoutes from "../routes/v1/risk.routes.js";
+import assistantRoutes from "../routes/v1/assistant.routes.js";
 
 export type HttpStackOptions = {
   identityService: IdentityService;
@@ -34,6 +44,11 @@ export type HttpStackOptions = {
   watchlist: WatchlistService;
   integrationCredentials: IntegrationCredentialsService;
   riskService: RiskService;
+  assistantService: AssistantService;
+  tradingModeService: TradingModeService;
+  decisionsService: DecisionsService;
+  metricsService: MetricsService;
+  auditRepo: IAuditRepository;
 };
 
 /**
@@ -93,5 +108,16 @@ export async function registerHttpStack(app: FastifyInstance, env: Env, deps: Ht
     integrationCredentials: deps.integrationCredentials,
   });
   await app.register(riskRoutes, { riskService: deps.riskService });
+  await app.register(assistantRoutes, { assistantService: deps.assistantService, riskService: deps.riskService });
+  await app.register(executionRoutes, {
+    tradingModeService: deps.tradingModeService,
+    auditRepo: deps.auditRepo,
+  });
+  await app.register(decisionsRoutes, {
+    decisionsService: deps.decisionsService,
+    tradingModeService: deps.tradingModeService,
+  });
+  await app.register(auditRoutes, { auditRepo: deps.auditRepo });
+  await app.register(metricsRoutes, { metricsService: deps.metricsService });
   await app.register(marketStreamPlugin);
 }

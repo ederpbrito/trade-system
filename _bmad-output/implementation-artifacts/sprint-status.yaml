@@ -26,7 +26,7 @@
 #   - done: Retrospective has been completed
 
 generated: "2026-04-05"
-last_updated: "2026-04-07"
+last_updated: "2026-04-07" # épico 6 histórias 6-1 a 6-4 done após code review
 # epic-2: correcções review + fecho épico 2026-04-05
 project: tradesystem
 project_key: NOKEY
@@ -67,22 +67,22 @@ development_status:
   epic-4-retrospective: optional
 
   epic-5: in-progress
-  5-1-intencao-de-execucao-em-modo-demonstracao: ready-for-dev
-  5-2-distincao-visual-e-logica-demo-vs-producao-gate-de-producao: ready-for-dev
-  5-3-registo-de-decisao-com-racional-estruturado: ready-for-dev
-  5-4-trilha-auditavel-de-decisoes-e-execucoes: ready-for-dev
-  5-5-historico-consultavel-de-decisoes-e-racional: ready-for-dev
-  5-6-vistas-basicas-de-desempenho-agregados: ready-for-dev
-  5-7-avisos-de-incerteza-e-ausencia-de-garantia: ready-for-dev
-  5-8-superficie-de-erro-com-requestid-copiavel: ready-for-dev
-  5-9-testes-e2e-dos-tres-percursos-criticos: ready-for-dev
+  5-1-intencao-de-execucao-em-modo-demonstracao: done
+  5-2-distincao-visual-e-logica-demo-vs-producao-gate-de-producao: done
+  5-3-registo-de-decisao-com-racional-estruturado: done
+  5-4-trilha-auditavel-de-decisoes-e-execucoes: done
+  5-5-historico-consultavel-de-decisoes-e-racional: done
+  5-6-vistas-basicas-de-desempenho-agregados: done
+  5-7-avisos-de-incerteza-e-ausencia-de-garantia: done
+  5-8-superficie-de-erro-com-requestid-copiavel: done
+  5-9-testes-e2e-dos-tres-percursos-criticos: done
   epic-5-retrospective: optional
 
   epic-6: in-progress
-  6-1-explicacao-da-tese-da-oportunidade-na-janela-assistantservice-regras: ready-for-dev
-  6-2-deteccao-e-apresentacao-de-conflito-entre-janelas: ready-for-dev
-  6-3-relacao-com-limites-de-risco-e-plano: ready-for-dev
-  6-4-ui-de-interaccao-estruturada-extensivel-a-conversacional: ready-for-dev
+  6-1-explicacao-da-tese-da-oportunidade-na-janela-assistantservice-regras: done
+  6-2-deteccao-e-apresentacao-de-conflito-entre-janelas: done
+  6-3-relacao-com-limites-de-risco-e-plano: done
+  6-4-ui-de-interaccao-estruturada-extensivel-a-conversacional: done
   epic-6-retrospective: optional
 
   epic-7: in-progress

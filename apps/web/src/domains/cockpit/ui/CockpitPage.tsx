@@ -5,6 +5,13 @@ import { useAuth } from "../../identity/context/AuthContext";
 import type { CockpitCandidate, CandidateSortBy } from "../lib/candidate-utils";
 import { filterCandidatesByWindow, sortCandidatesStable } from "../lib/candidate-utils";
 import { RiskPanel } from "./RiskPanel";
+import { ExecutionPanel } from "./ExecutionPanel";
+import { DecisionForm } from "./DecisionForm";
+import { DecisionHistoryPanel } from "./DecisionHistoryPanel";
+import { MetricsPanel } from "./MetricsPanel";
+import { AssistantPanel } from "./AssistantPanel";
+import { ApiErrorDisplay } from "../../../shared/ui/ApiErrorDisplay";
+import type { ApiError } from "../../../shared/ui/ApiErrorDisplay";
 
 type SourceHealth = {
   connectorId: string;
@@ -129,6 +136,7 @@ export function CockpitPage() {
   const [catalog, setCatalog] = useState<CatalogInstrument[]>([]);
   const [candidatesPayload, setCandidatesPayload] = useState<CandidatesApiResponse | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [apiError, setApiError] = useState<ApiError | null>(null);
 
   const [filterMarket, setFilterMarket] = useState<string>("all");
   const [filterPriority, setFilterPriority] = useState<"all" | "low" | "medium" | "high">("all");
@@ -141,6 +149,7 @@ export function CockpitPage() {
 
   const [selectedCandidateId, setSelectedCandidateId] = useState<string | null>(null);
   const [decisionContext, setDecisionContext] = useState<DecisionContext | null>(null);
+  const [lastOrderIntentId, setLastOrderIntentId] = useState<string | undefined>(undefined);
 
   const streamSymbols = useMemo(() => {
     const syms = watchlist.map((w) => w.symbolInternal);
@@ -239,13 +248,15 @@ export function CockpitPage() {
   const onAddWatchlist = async () => {
     if (!addInstrumentId) return;
     setLoadError(null);
+    setApiError(null);
     try {
       const res = await apiFetch("/api/v1/watchlist", {
         method: "POST",
         body: JSON.stringify({ instrumentId: addInstrumentId, priority: addPriority }),
       });
       if (!res.ok) {
-        const j = (await res.json().catch(() => null)) as { error?: { message?: string } } | null;
+        const j = (await res.json().catch(() => null)) as { error?: { code?: string; message?: string; requestId?: string } } | null;
+        setApiError(j?.error ?? { message: "Falha ao adicionar." });
         setLoadError(j?.error?.message ?? "Falha ao adicionar.");
         return;
       }
@@ -650,30 +661,65 @@ export function CockpitPage() {
         background: "#f8fafc",
         minHeight: 200,
       }}
-      aria-labelledby="asst-title"
     >
-      <h2 id="asst-title" style={{ fontSize: "1rem", marginBottom: "0.5rem" }}>
-        Assistente
-      </h2>
-      <p style={{ fontSize: "0.875rem", color: "#64748b", marginBottom: "0.75rem" }}>
-        Placeholder do assistente (UX-DR9). O contexto de decisão segue o candidato seleccionado.
-      </p>
-      {decisionContext ? (
-        <div style={{ fontSize: "0.8rem", padding: "0.5rem", background: "#fff", borderRadius: 6, border: "1px solid #e2e8f0" }}>
-          <strong>Contexto activo</strong>
-          <div style={{ marginTop: 6 }}>
-            <span style={chip}>{decisionContext.symbolInternal}</span>
-            <span style={chip}>{decisionContext.timeframe}</span>
-            <span style={{ ...chip, background: "#fce7f3", color: "#9d174d" }}>{decisionContext.horizonte}</span>
-          </div>
-        </div>
-      ) : (
-        <p style={{ fontSize: "0.8rem", color: "#94a3b8", margin: 0 }}>Sem contexto até seleccionar candidato.</p>
-      )}
+      <AssistantPanel decisionContext={decisionContext} />
     </section>
   );
 
   const riskBlock = <RiskPanel decisionContext={decisionContext} />;
+
+  const executionBlock = (
+    <section style={card} aria-labelledby="exec-section-title">
+      <h2 id="exec-section-title" style={{ fontSize: "1rem", marginBottom: "0.5rem" }}>
+        Execução demo
+      </h2>
+      <ExecutionPanel
+        decisionContext={decisionContext}
+        onIntentSubmitted={(intent) => setLastOrderIntentId(intent.id)}
+      />
+    </section>
+  );
+
+  const decisionFormBlock = (
+    <section style={card} aria-labelledby="dec-form-section-title">
+      <h2 id="dec-form-section-title" style={{ fontSize: "1rem", marginBottom: "0.5rem" }}>
+        Decisão
+      </h2>
+      <DecisionForm
+        decisionContext={decisionContext}
+        orderIntentId={lastOrderIntentId}
+        onDecisionRecorded={() => setLastOrderIntentId(undefined)}
+      />
+    </section>
+  );
+
+  const historyBlock = (
+    <section style={card} aria-labelledby="hist-section-title">
+      <h2 id="hist-section-title" style={{ fontSize: "1rem", marginBottom: "0.5rem" }}>
+        Histórico
+      </h2>
+      <DecisionHistoryPanel />
+    </section>
+  );
+
+  const metricsBlock = (
+    <section style={card} aria-labelledby="metrics-section-title">
+      <h2 id="metrics-section-title" style={{ fontSize: "1rem", marginBottom: "0.5rem" }}>
+        Métricas
+      </h2>
+      <MetricsPanel />
+    </section>
+  );
+
+  const apiErrorBlock = apiError ? (
+    <div style={{ marginBottom: "0.75rem" }}>
+      <ApiErrorDisplay
+        error={apiError}
+        title="Erro na operação"
+        variant="inline"
+      />
+    </div>
+  ) : null;
 
   const ticksStrip =
     liveTicks.length > 0 ? (
@@ -713,6 +759,9 @@ export function CockpitPage() {
     <main style={{ maxWidth: 1400, margin: "0 auto", padding: "1rem" }}>
       <h1 style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>Cockpit</h1>
 
+      {/* FR36/UX-DR12: erro global com requestId copiável */}
+      {apiErrorBlock}
+
       {vp === "narrow" ? (
         <>
           {alertsBlock}
@@ -721,7 +770,11 @@ export function CockpitPage() {
           {candidatesBlock}
           {detailBlock}
           {riskBlock}
+          {executionBlock}
+          {decisionFormBlock}
           {assistantBlock}
+          {metricsBlock}
+          {historyBlock}
           {sourcesBlock}
         </>
       ) : vp === "mid" ? (
@@ -736,9 +789,13 @@ export function CockpitPage() {
               {candidatesBlock}
               {detailBlock}
               {riskBlock}
+              {executionBlock}
+              {decisionFormBlock}
               {assistantBlock}
             </div>
           </div>
+          {metricsBlock}
+          {historyBlock}
           {sourcesBlock}
         </>
       ) : (
@@ -753,9 +810,13 @@ export function CockpitPage() {
             <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
               {candidatesBlock}
               {detailBlock}
+              {metricsBlock}
+              {historyBlock}
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
               {riskBlock}
+              {executionBlock}
+              {decisionFormBlock}
               {assistantBlock}
             </div>
           </div>

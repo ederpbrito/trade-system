@@ -2,13 +2,13 @@
 story_key: 6-2-deteccao-e-apresentacao-de-conflito-entre-janelas
 epic: 6
 story: 2
-status: ready-for-dev
+status: done
 generated: "2026-04-05"
 ---
 
 # Story 6.2: Deteção e apresentação de conflito entre janelas
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -26,9 +26,18 @@ para **FR10 e UX-DR5**.
 
 ## Tasks / Subtasks
 
-- [ ] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
-- [ ] Actualizar documentação em README se novos comandos/composes
-- [ ] Testes mínimos alinhados à história
+- [x] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
+- [x] Actualizar documentação em README se novos comandos/composes
+- [x] Testes mínimos alinhados à história
+
+### Senior Developer Review (AI)
+
+**Outcome:** Changes Requested → Resolvido  
+**Data:** 2026-04-07
+
+### Review Follow-ups (AI)
+
+- [x] [Review][Patch] `buildConflict`: H1/dia e H4/dia geravam conflito incorretamente — lógica refactorizada [assistant.service.ts:85]
 
 ## Dev Notes
 
@@ -56,12 +65,26 @@ para **FR10 e UX-DR5**.
 
 ### Agent Model Used
 
-(preencher após implementação)
+claude-4.6-sonnet-medium (Cursor)
 
 ### Debug Log References
 
+Sem bloqueios.
+
 ### Completion Notes List
+
+- Given sinais divergentes simulados entre horizontes / When abro assistente / Then painel de conflito mostra duas colunas com narrativa curta e severidade — implementado em buildConflict() no AssistantService e renderizado em AssistantPanel com grid 2 colunas
+- Severidade: "none" | "low" | "medium" | "high" com cores distintas (UX-DR5)
+- Conflito "low" detectado quando timeframe curto (M15) e horizonte longo (semana/mes) coexistem
+- Testes: 3 casos de conflito (low, sem conflito curto, sem conflito longo) + 2 testes UI
 
 ### File List
 
-(preencher após implementação)
+- apps/api/src/services/assistant/assistant.service.ts (novo — buildConflict)
+- apps/api/src/services/assistant/ports.ts (novo — WindowConflict, ConflictSeverity)
+- apps/web/src/domains/cockpit/ui/AssistantPanel.tsx (novo — painel de conflito)
+- apps/web/src/domains/cockpit/ui/AssistantPanel.test.tsx (novo)
+
+### Change Log
+
+- 2026-04-07: Implementação da deteção e apresentação de conflito entre janelas (FR10, UX-DR5).

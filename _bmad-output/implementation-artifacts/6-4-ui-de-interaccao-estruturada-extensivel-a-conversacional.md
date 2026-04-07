@@ -2,13 +2,13 @@
 story_key: 6-4-ui-de-interaccao-estruturada-extensivel-a-conversacional
 epic: 6
 story: 4
-status: ready-for-dev
+status: done
 generated: "2026-04-05"
 ---
 
 # Story 6.4: UI de interacção estruturada (e extensível a conversacional)
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -29,9 +29,21 @@ para **FR12**.
 
 ## Tasks / Subtasks
 
-- [ ] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
-- [ ] Actualizar documentação em README se novos comandos/composes
-- [ ] Testes mínimos alinhados à história
+- [x] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
+- [x] Actualizar documentação em README se novos comandos/composes
+- [x] Testes mínimos alinhados à história
+
+### Senior Developer Review (AI)
+
+**Outcome:** Changes Requested → Resolvido  
+**Data:** 2026-04-07
+
+### Review Follow-ups (AI)
+
+- [x] [Review][Patch] Race condition em mudanças rápidas de candidato — adicionado `AbortController` [AssistantPanel.tsx:116]
+- [x] [Review][Patch] ID `asst-title` hardcoded podia duplicar — substituído por `useId()` [AssistantPanel.tsx:104]
+- [x] [Review][Patch] `adherenceSummary` null sem guarda quando `hasLimits=true` — adicionada verificação [AssistantPanel.tsx:318]
+- [x] [Review][Patch] Teste de preservação de estado com asserção fraca — verificação de conteúdo visível adicionada [AssistantPanel.test.tsx:227]
 
 ## Dev Notes
 
@@ -59,12 +71,26 @@ para **FR12**.
 
 ### Agent Model Used
 
-(preencher após implementação)
+claude-4.6-sonnet-medium (Cursor)
 
 ### Debug Log References
 
+Sem bloqueios.
+
 ### Completion Notes List
+
+- Given painel do assistente na terceira coluna / When refresco contexto ao mudar candidato / Then o conteúdo actualiza sem perder estado de sessão irrelevante — implementado com useRef(prevCandidateId) + useState(expandedSections) preservado entre mudanças de candidato
+- And se chat existir, mensagens incluem disclaimer e não substituem checks de risco — disclaimer implementado com role="note" no rodapé do AssistantPanel
+- AssistantPanel integrado na terceira coluna do CockpitPage (layout wide) substituindo placeholder
+- Secções expansíveis (toggle) com estado de expansão preservado ao mudar candidato
+- 12 testes UI passam (AssistantPanel.test.tsx)
 
 ### File List
 
-(preencher após implementação)
+- apps/web/src/domains/cockpit/ui/AssistantPanel.tsx (novo)
+- apps/web/src/domains/cockpit/ui/AssistantPanel.test.tsx (novo)
+- apps/web/src/domains/cockpit/ui/CockpitPage.tsx (modificado — integração AssistantPanel)
+
+### Change Log
+
+- 2026-04-07: Implementação da UI de interação estruturada do assistente (FR12) com atualização de contexto e disclaimer.
