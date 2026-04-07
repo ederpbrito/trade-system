@@ -9,16 +9,43 @@ describe("CockpitPage", () => {
     globalThis.fetch = vi.fn(async (url: string | URL) => {
       const u = String(url);
       if (u.includes("/data-sources/health")) {
-        return new Response(JSON.stringify({ sources: [{ connectorId: "mock", state: "operational", lastHeartbeatAt: null, latencyMs: 10, updatedAt: new Date().toISOString() }] }), {
+        return new Response(
+          JSON.stringify({
+            sources: [
+              {
+                connectorId: "mock",
+                state: "operational",
+                lastHeartbeatAt: null,
+                latencyMs: 10,
+                updatedAt: new Date().toISOString(),
+              },
+            ],
+          }),
+          { status: 200, headers: { "Content-Type": "application/json" } },
+        );
+      }
+      if (u.includes("/watchlist")) {
+        return new Response(JSON.stringify({ entries: [] }), {
           status: 200,
           headers: { "Content-Type": "application/json" },
         });
       }
-      if (u.includes("/opportunities/candidates/preview")) {
-        return new Response(JSON.stringify({ candidates: [], suppressionReason: null, policy: "suppress" }), {
+      if (u.includes("/instruments") && !u.includes("watchlist")) {
+        return new Response(JSON.stringify({ instruments: [] }), {
           status: 200,
           headers: { "Content-Type": "application/json" },
         });
+      }
+      if (u.includes("/opportunities/candidates") && !u.includes("preview")) {
+        return new Response(
+          JSON.stringify({
+            candidates: [],
+            suppressionReason: null,
+            policy: "uncertain",
+            sortBy: "priority",
+          }),
+          { status: 200, headers: { "Content-Type": "application/json" } },
+        );
       }
       return new Response("", { status: 404 });
     }) as typeof fetch;
@@ -39,5 +66,8 @@ describe("CockpitPage", () => {
       expect(screen.getByText("mock")).toBeInTheDocument();
     });
     expect(screen.getByText("Operacional")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText("Lista monitorizada")).toBeInTheDocument();
+    });
   });
 });

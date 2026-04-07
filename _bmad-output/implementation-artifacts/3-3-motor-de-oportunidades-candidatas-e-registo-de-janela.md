@@ -2,13 +2,13 @@
 story_key: 3-3-motor-de-oportunidades-candidatas-e-registo-de-janela
 epic: 3
 story: 3
-status: ready-for-dev
+status: done
 generated: "2026-04-05"
 ---
 
 # Story 3.3: Motor de oportunidades candidatas e registo de janela
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -28,9 +28,9 @@ para **FR5, FR8**.
 
 ## Tasks / Subtasks
 
-- [ ] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
-- [ ] Actualizar documentação em README se novos comandos/composes
-- [ ] Testes mínimos alinhados à história
+- [x] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
+- [x] Actualizar documentação em README se novos comandos/composes (N/A)
+- [x] Testes mínimos alinhados à história
 
 ## Dev Notes
 
@@ -58,12 +58,23 @@ para **FR5, FR8**.
 
 ### Agent Model Used
 
-(preencher após implementação)
+Composer (lote épico 3)
 
 ### Debug Log References
 
 ### Completion Notes List
 
+- `GET /api/v1/opportunities/candidates`: candidatos por entradas da watchlist, com `timeframe`/`horizonte`; política de degradação alinhada ao preview; selecção na UI define contexto de decisão (FR8).
+
 ### File List
 
-(preencher após implementação)
+- apps/api/src/services/opportunities/opportunities-candidates.service.ts
+- apps/api/src/services/opportunities/degradation.ts
+- apps/api/src/routes/v1/opportunities.routes.ts
+- apps/api/src/composition/create-app-services.ts
+- apps/api/src/routes/v1/watchlist.integration.test.ts
+- apps/web/src/domains/cockpit/ui/CockpitPage.tsx
+
+## Change Log
+
+- 2026-04-06: Motor de candidatos por watchlist + registo de janela na UI.

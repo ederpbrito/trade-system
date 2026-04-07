@@ -26,6 +26,12 @@ export type OpportunityCandidate = {
   id: string;
   symbolInternal: string;
   certainty: "normal" | "uncertain";
+  /** Extensões preservadas em evaluateCandidates (FR6/FR7/FR8) */
+  instrumentId?: string;
+  timeframe?: string;
+  horizonte?: string;
+  priorityRank?: number;
+  sortTimeMs?: number;
 };
 
 /**

@@ -2,13 +2,13 @@
 story_key: 3-5-filtrar-e-ordenar-candidatos-por-janela
 epic: 3
 story: 5
-status: ready-for-dev
+status: done
 generated: "2026-04-05"
 ---
 
 # Story 3.5: Filtrar e ordenar candidatos por janela
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -28,9 +28,9 @@ para **FR7**.
 
 ## Tasks / Subtasks
 
-- [ ] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
-- [ ] Actualizar documentação em README se novos comandos/composes
-- [ ] Testes mínimos alinhados à história
+- [x] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
+- [x] Actualizar documentação em README se novos comandos/composes (N/A)
+- [x] Testes mínimos alinhados à história
 
 ## Dev Notes
 
@@ -58,12 +58,23 @@ para **FR7**.
 
 ### Agent Model Used
 
-(preencher após implementação)
+Composer (lote épico 3)
 
 ### Debug Log References
 
 ### Completion Notes List
 
+- Filtros TF + horizonte na UI; ordenação por prioridade ou tempo com função estável (`candidate-sort.ts` API + `candidate-utils` web + testes).
+
 ### File List
 
-(preencher após implementação)
+- apps/api/src/services/opportunities/candidate-sort.ts
+- apps/api/src/services/opportunities/candidate-sort.test.ts
+- apps/api/src/routes/v1/opportunities.routes.ts
+- apps/web/src/domains/cockpit/lib/candidate-utils.ts
+- apps/web/src/domains/cockpit/lib/candidate-utils.test.ts
+- apps/web/src/domains/cockpit/ui/CockpitPage.tsx
+
+## Change Log
+
+- 2026-04-06: Filtrar e ordenar candidatos por janela (FR7).

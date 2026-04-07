@@ -2,13 +2,13 @@
 story_key: 3-6-layout-cockpit-tres-colunas-desktop-com-degradacao-responsiva
 epic: 3
 story: 6
-status: ready-for-dev
+status: done
 generated: "2026-04-05"
 ---
 
 # Story 3.6: Layout cockpit três colunas (desktop) com degradação responsiva
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -27,13 +27,11 @@ para **UX-DR9**.
 
 ---
 
-## Épico 4: Gestão de risco configurável no fluxo de decisão
-
 ## Tasks / Subtasks
 
-- [ ] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
-- [ ] Actualizar documentação em README se novos comandos/composes
-- [ ] Testes mínimos alinhados à história
+- [x] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
+- [x] Actualizar documentação em README se novos comandos/composes (N/A)
+- [x] Testes mínimos alinhados à história
 
 ## Dev Notes
 
@@ -61,12 +59,19 @@ para **UX-DR9**.
 
 ### Agent Model Used
 
-(preencher após implementação)
+Composer (lote épico 3)
 
 ### Debug Log References
 
 ### Completion Notes List
 
+- `useViewportBand`: viewport inferior a 768px — coluna única com alertas e lista primeiro; ≥1024px *grid* de três colunas (lista+fontes | candidatos+detalhe | assistente); *tablet* duas colunas.
+
 ### File List
 
-(preencher após implementação)
+- apps/web/src/domains/cockpit/ui/CockpitPage.tsx
+- apps/web/src/domains/cockpit/ui/CockpitPage.test.tsx
+
+## Change Log
+
+- 2026-04-06: Layout cockpit responsivo UX-DR9.

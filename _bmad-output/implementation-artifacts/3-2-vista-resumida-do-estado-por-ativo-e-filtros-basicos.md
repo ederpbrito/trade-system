@@ -2,13 +2,13 @@
 story_key: 3-2-vista-resumida-do-estado-por-ativo-e-filtros-basicos
 epic: 3
 story: 2
-status: ready-for-dev
+status: done
 generated: "2026-04-05"
 ---
 
 # Story 3.2: Vista resumida do estado por ativo e filtros básicos
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -28,9 +28,9 @@ para **FR2, FR4**.
 
 ## Tasks / Subtasks
 
-- [ ] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
-- [ ] Actualizar documentação em README se novos comandos/composes
-- [ ] Testes mínimos alinhados à história
+- [x] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
+- [x] Actualizar documentação em README se novos comandos/composes (N/A)
+- [x] Testes mínimos alinhados à história
 
 ## Dev Notes
 
@@ -58,12 +58,22 @@ para **FR2, FR4**.
 
 ### Agent Model Used
 
-(preencher após implementação)
+Composer (lote épico 3)
 
 ### Debug Log References
 
 ### Completion Notes List
 
+- Resumo por linha: último `close` OHLC ou tick WS; mercado = `venue` ou `connectorId`; filtros mercado/prioridade em `useMemo` (NFR-P1 com dados em cache no cliente).
+
 ### File List
 
-(preencher após implementação)
+- apps/api/src/services/watchlist/watchlist.service.ts
+- apps/api/src/repositories/drizzle-ohlc.repository.ts
+- apps/api/src/services/market-data/ports.ts
+- apps/web/src/domains/cockpit/ui/CockpitPage.tsx
+- apps/web/src/domains/cockpit/ui/CockpitPage.test.tsx
+
+## Change Log
+
+- 2026-04-06: Vista resumida e filtros básicos no cockpit.

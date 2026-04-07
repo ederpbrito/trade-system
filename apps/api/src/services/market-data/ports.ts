@@ -24,6 +24,22 @@ export type InstrumentMinimal = {
   connectorId: string;
 };
 
+export type InstrumentCatalogRow = {
+  id: string;
+  symbolInternal: string;
+  venue: string | null;
+  connectorId: string;
+  /** Mercado para filtros (FR2): venue ou conetor como *fallback* */
+  market: string;
+};
+
+export type InstrumentByIdRow = {
+  id: string;
+  symbolInternal: string;
+  venue: string | null;
+  connectorId: string;
+};
+
 export interface IInstrumentRepository {
   upsertBySymbol(input: {
     symbolInternal: string;
@@ -32,7 +48,9 @@ export interface IInstrumentRepository {
     connectorId: string;
   }): Promise<{ id: string }>;
   findIdBySymbol(symbolInternal: string): Promise<string | null>;
+  findById(id: string): Promise<InstrumentByIdRow | null>;
   listAllMinimal(): Promise<InstrumentMinimal[]>;
+  listCatalog(): Promise<InstrumentCatalogRow[]>;
 }
 
 export type OhlcBarInput = {
@@ -48,11 +66,22 @@ export type OhlcBarInput = {
   qualityFlag: string | null;
 };
 
+export type OhlcLatestBarRow = {
+  instrumentId: string;
+  close: number;
+  /** `close` da barra imediatamente anterior (para calcular variação FR2); null se não existir. */
+  previousClose: number | null;
+  tsOpen: Date;
+  timeframe: string;
+};
+
 export interface IOhlcBarRepository {
   upsertBar(bar: OhlcBarInput): Promise<void>;
   latestTsOpenForInstrument(instrumentId: string): Promise<Date | null>;
   /** Último `ts_open` por instrumento (uma query; evita N+1). */
   latestTsOpenForInstrumentIds(instrumentIds: string[]): Promise<Map<string, Date | null>>;
+  /** Última barra por instrumento (maior `ts_open`), qualquer timeframe. */
+  latestBarPerInstrumentIds(instrumentIds: string[]): Promise<Map<string, OhlcLatestBarRow | null>>;
 }
 
 export type MarketSyncHealth = {

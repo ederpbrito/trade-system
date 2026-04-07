@@ -2,13 +2,13 @@
 story_key: 3-4-detalhe-do-candidato-com-timeframe-e-horizonte-explicitos
 epic: 3
 story: 4
-status: ready-for-dev
+status: done
 generated: "2026-04-05"
 ---
 
 # Story 3.4: Detalhe do candidato com timeframe e horizonte explícitos
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -27,9 +27,9 @@ para **FR6 e UX-DR3/UX-DR4**.
 
 ## Tasks / Subtasks
 
-- [ ] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
-- [ ] Actualizar documentação em README se novos comandos/composes
-- [ ] Testes mínimos alinhados à história
+- [x] Implementar conforme AC (referir cada Given/When/Then nos commits ou PR)
+- [x] Actualizar documentação em README se novos comandos/composes (N/A)
+- [x] Testes mínimos alinhados à história
 
 ## Dev Notes
 
@@ -57,12 +57,19 @@ para **FR6 e UX-DR3/UX-DR4**.
 
 ### Agent Model Used
 
-(preencher após implementação)
+Composer (lote épico 3)
 
 ### Debug Log References
 
 ### Completion Notes List
 
+- Painel de detalhe com *chips* TF / horizonte / certeza; estados visuais UX-DR3 (seleccionado, incerto com realce).
+
 ### File List
 
-(preencher após implementação)
+- apps/web/src/domains/cockpit/ui/CockpitPage.tsx
+- apps/api/src/services/opportunities/degradation.test.ts
+
+## Change Log
+
+- 2026-04-06: Detalhe do candidato com TF e horizonte explícitos.

@@ -61,4 +61,33 @@ export class DrizzleInstrumentRepository implements IInstrumentRepository {
       .from(instruments);
     return rows;
   }
+
+  async findById(id: string) {
+    const [row] = await db
+      .select({
+        id: instruments.id,
+        symbolInternal: instruments.symbolInternal,
+        venue: instruments.venue,
+        connectorId: instruments.connectorId,
+      })
+      .from(instruments)
+      .where(eq(instruments.id, id))
+      .limit(1);
+    return row ?? null;
+  }
+
+  async listCatalog() {
+    const rows = await db
+      .select({
+        id: instruments.id,
+        symbolInternal: instruments.symbolInternal,
+        venue: instruments.venue,
+        connectorId: instruments.connectorId,
+      })
+      .from(instruments);
+    return rows.map((r) => ({
+      ...r,
+      market: (r.venue && r.venue.trim() !== "" ? r.venue : r.connectorId) ?? r.connectorId,
+    }));
+  }
 }

@@ -1,4 +1,5 @@
 import {
+  boolean,
   doublePrecision,
   integer,
   pgEnum,
@@ -18,6 +19,9 @@ export const users = pgTable("users", {
 
 export type User = typeof users.$inferSelect;
 
+/** FR1 / FR4 — prioridade na lista monitorizada */
+export const watchlistPriorityEnum = pgEnum("watchlist_priority", ["low", "medium", "high"]);
+
 /** FR26 — estados operacional / degradada / indisponível */
 export const connectorStateEnum = pgEnum("connector_state", ["operational", "degraded", "unavailable"]);
 
@@ -30,6 +34,25 @@ export const instruments = pgTable("instruments", {
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
 });
+
+export const watchlistEntries = pgTable(
+  "watchlist_entries",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    instrumentId: uuid("instrument_id")
+      .references(() => instruments.id, { onDelete: "cascade" })
+      .notNull(),
+    priority: watchlistPriorityEnum("priority").notNull().default("medium"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => ({
+    userInstrumentUnique: uniqueIndex("watchlist_entries_user_instrument").on(t.userId, t.instrumentId),
+  }),
+);
 
 export const ohlcBars = pgTable(
   "ohlc_bars",
@@ -71,7 +94,54 @@ export const integrationCredentials = pgTable("integration_credentials", {
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
 });
 
+/**
+ * FR13/FR35 — limites de risco configuráveis por utilizador.
+ * Um registo por utilizador (upsert); campos nulos = limite não configurado.
+ */
+export const riskLimits = pgTable("risk_limits", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .references(() => users.id, { onDelete: "cascade" })
+    .notNull()
+    .unique(),
+  /** Tamanho máximo de posição (unidades/lotes) */
+  maxPositionSize: doublePrecision("max_position_size"),
+  /** Perda máxima diária (valor monetário) */
+  maxDailyLoss: doublePrecision("max_daily_loss"),
+  /** Concentração máxima por ativo (0–1, ex.: 0.20 = 20%) */
+  maxConcentration: doublePrecision("max_concentration"),
+  /** Exposição total máxima (valor monetário) */
+  maxTotalExposure: doublePrecision("max_total_exposure"),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+/**
+ * FR15/FR29 — registo de exceções a limites de risco (trilha auditável).
+ */
+export const riskExceptionLog = pgTable("risk_exception_log", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .references(() => users.id, { onDelete: "cascade" })
+    .notNull(),
+  /** Qual limite foi violado */
+  limitKey: text("limit_key").notNull(),
+  /** Valor proposto que causou a violação */
+  proposedValue: doublePrecision("proposed_value").notNull(),
+  /** Limite configurado no momento */
+  limitValue: doublePrecision("limit_value").notNull(),
+  /** Motivo de exceção fornecido pelo utilizador */
+  reason: text("reason").notNull(),
+  /** Contexto opcional (candidateId, instrumentId, etc.) */
+  contextJson: text("context_json"),
+  /** Indica se a exceção foi aprovada (true) ou bloqueada (false) */
+  approved: boolean("approved").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
 export type Instrument = typeof instruments.$inferSelect;
+export type WatchlistEntryRow = typeof watchlistEntries.$inferSelect;
 export type OhlcBar = typeof ohlcBars.$inferSelect;
 export type ConnectorHealthRow = typeof connectorHealth.$inferSelect;
 export type IntegrationCredentialRow = typeof integrationCredentials.$inferSelect;
+export type RiskLimitsRow = typeof riskLimits.$inferSelect;
+export type RiskExceptionLogRow = typeof riskExceptionLog.$inferSelect;

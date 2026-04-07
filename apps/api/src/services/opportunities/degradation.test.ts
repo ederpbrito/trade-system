@@ -50,4 +50,27 @@ describe("degradation (FR27)", () => {
     expect(r.candidates).toHaveLength(0);
     expect(r.suppressionReason).toContain("data_stale");
   });
+
+  it("preserva timeframe, horizonte e ranks nas candidaturas (FR6)", () => {
+    const r = evaluateCandidates({
+      policy: "uncertain",
+      worstState: "degraded",
+      hasStaleBars: false,
+      baseCandidates: [
+        {
+          id: "1",
+          symbolInternal: "EUR",
+          certainty: "normal",
+          timeframe: "M15",
+          horizonte: "dia",
+          priorityRank: 0,
+          sortTimeMs: 10,
+        },
+      ],
+      log: vi.fn(),
+    });
+    expect(r.candidates[0]?.timeframe).toBe("M15");
+    expect(r.candidates[0]?.horizonte).toBe("dia");
+    expect(r.candidates[0]?.priorityRank).toBe(0);
+  });
 });
